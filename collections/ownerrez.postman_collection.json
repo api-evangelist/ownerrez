@@ -1,0 +1,558 @@
+{
+  "info": {
+    "name": "OwnerRez API v2",
+    "description": "REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. Base URL: https://api.ownerrez.com/v2. Authenticate with an OAuth 2.0 access token or an API key / Personal Access Token supplied as the username in HTTP Basic auth (blank password). The API is rate limited to 300 requests per 5 minutes per IP. Endpoint paths and methods are grounded in https://api.ownerrez.com/help/v2/index.md.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{apiKey}}", "type": "string" },
+      { "key": "password", "value": "", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.ownerrez.com/v2", "type": "string" },
+    { "key": "apiKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "List bookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/bookings?property_ids=1&from=2026-01-01&to=2026-12-31", "host": ["{{baseUrl}}"], "path": ["bookings"], "query": [{ "key": "property_ids", "value": "1" }, { "key": "from", "value": "2026-01-01" }, { "key": "to", "value": "2026-12-31" }] },
+            "description": "Returns a paginated list of bookings, filterable by property and arrival window."
+          }
+        },
+        {
+          "name": "Create a booking",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"property_id\": 1,\n  \"guest_id\": 100,\n  \"arrival\": \"2026-08-01\",\n  \"departure\": \"2026-08-07\",\n  \"adults\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/bookings", "host": ["{{baseUrl}}"], "path": ["bookings"] },
+            "description": "Creates a new booking."
+          }
+        },
+        {
+          "name": "Retrieve a booking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/bookings/:id", "host": ["{{baseUrl}}"], "path": ["bookings", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single booking by ID."
+          }
+        },
+        {
+          "name": "Update a booking",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"notes\": \"Early check-in requested\"\n}" },
+            "url": { "raw": "{{baseUrl}}/bookings/:id", "host": ["{{baseUrl}}"], "path": ["bookings", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Partially updates an existing booking."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Properties",
+      "item": [
+        {
+          "name": "List properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/properties", "host": ["{{baseUrl}}"], "path": ["properties"] },
+            "description": "Returns a paginated list of properties."
+          }
+        },
+        {
+          "name": "Retrieve a property",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/properties/:id", "host": ["{{baseUrl}}"], "path": ["properties", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single property by ID."
+          }
+        },
+        {
+          "name": "Search properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/propertysearch?from=2026-08-01&to=2026-08-07&guests=4", "host": ["{{baseUrl}}"], "path": ["propertysearch"], "query": [{ "key": "from", "value": "2026-08-01" }, { "key": "to", "value": "2026-08-07" }, { "key": "guests", "value": "4" }] },
+            "description": "Searches properties by availability window and occupancy."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listings",
+      "item": [
+        {
+          "name": "List listings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/listings", "host": ["{{baseUrl}}"], "path": ["listings"] },
+            "description": "Returns a paginated list of listings."
+          }
+        },
+        {
+          "name": "Retrieve a listing",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/listings/:id", "host": ["{{baseUrl}}"], "path": ["listings", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single listing by ID."
+          }
+        },
+        {
+          "name": "List listing sites",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/listingsites", "host": ["{{baseUrl}}"], "path": ["listingsites"] },
+            "description": "Returns the channel listing sites."
+          }
+        },
+        {
+          "name": "Retrieve a listing site",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/listingsites/:id", "host": ["{{baseUrl}}"], "path": ["listingsites", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single listing site by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Guests",
+      "item": [
+        {
+          "name": "List guests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/guests", "host": ["{{baseUrl}}"], "path": ["guests"] },
+            "description": "Returns a paginated list of guest contact records."
+          }
+        },
+        {
+          "name": "Create a guest",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Doe\"\n}" },
+            "url": { "raw": "{{baseUrl}}/guests", "host": ["{{baseUrl}}"], "path": ["guests"] },
+            "description": "Creates a new guest contact record."
+          }
+        },
+        {
+          "name": "Retrieve a guest",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/guests/:id", "host": ["{{baseUrl}}"], "path": ["guests", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single guest by ID."
+          }
+        },
+        {
+          "name": "Update a guest",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"notes\": \"VIP\"\n}" },
+            "url": { "raw": "{{baseUrl}}/guests/:id", "host": ["{{baseUrl}}"], "path": ["guests", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Partially updates a guest record."
+          }
+        },
+        {
+          "name": "Delete a guest",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/guests/:id", "host": ["{{baseUrl}}"], "path": ["guests", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Deletes a guest record."
+          }
+        },
+        {
+          "name": "Delete a guest address",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/guests/:id/addresses/:address_id", "host": ["{{baseUrl}}"], "path": ["guests", ":id", "addresses", ":address_id"], "variable": [{ "key": "id", "value": "1" }, { "key": "address_id", "value": "1" }] },
+            "description": "Removes an address from a guest."
+          }
+        },
+        {
+          "name": "Delete a guest email address",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/guests/:id/emailaddresses/:email_address_id", "host": ["{{baseUrl}}"], "path": ["guests", ":id", "emailaddresses", ":email_address_id"], "variable": [{ "key": "id", "value": "1" }, { "key": "email_address_id", "value": "1" }] },
+            "description": "Removes an email address from a guest."
+          }
+        },
+        {
+          "name": "Delete a guest phone",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/guests/:id/phones/:phone_id", "host": ["{{baseUrl}}"], "path": ["guests", ":id", "phones", ":phone_id"], "variable": [{ "key": "id", "value": "1" }, { "key": "phone_id", "value": "1" }] },
+            "description": "Removes a phone number from a guest."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inquiries",
+      "item": [
+        {
+          "name": "List inquiries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/inquiries", "host": ["{{baseUrl}}"], "path": ["inquiries"] },
+            "description": "Returns a paginated list of inbound guest inquiries."
+          }
+        },
+        {
+          "name": "Retrieve an inquiry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/inquiries/:id", "host": ["{{baseUrl}}"], "path": ["inquiries", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single inquiry by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quotes",
+      "item": [
+        {
+          "name": "List quotes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/quotes", "host": ["{{baseUrl}}"], "path": ["quotes"] },
+            "description": "Returns a paginated list of price quotes."
+          }
+        },
+        {
+          "name": "Create a quote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"property_id\": 1,\n  \"arrival\": \"2026-08-01\",\n  \"departure\": \"2026-08-07\",\n  \"adults\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/quotes", "host": ["{{baseUrl}}"], "path": ["quotes"] },
+            "description": "Creates a new price quote."
+          }
+        },
+        {
+          "name": "Retrieve a quote",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/quotes/:id", "host": ["{{baseUrl}}"], "path": ["quotes", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single quote by ID."
+          }
+        },
+        {
+          "name": "Update a quote",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/quotes/:id", "host": ["{{baseUrl}}"], "path": ["quotes", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Partially updates a quote."
+          }
+        },
+        {
+          "name": "Delete a quote",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/quotes/:id", "host": ["{{baseUrl}}"], "path": ["quotes", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Deletes a quote."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "List reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/reviews", "host": ["{{baseUrl}}"], "path": ["reviews"] },
+            "description": "Returns a paginated list of guest reviews."
+          }
+        },
+        {
+          "name": "Retrieve a review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/reviews/:id", "host": ["{{baseUrl}}"], "path": ["reviews", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single review by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "List messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/messages?booking_id=1", "host": ["{{baseUrl}}"], "path": ["messages"], "query": [{ "key": "booking_id", "value": "1" }] },
+            "description": "Returns a paginated list of guest messages."
+          }
+        },
+        {
+          "name": "Send a message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"booking_id\": 1,\n  \"body\": \"Your check-in details are ready.\"\n}" },
+            "url": { "raw": "{{baseUrl}}/messages", "host": ["{{baseUrl}}"], "path": ["messages"] },
+            "description": "Sends an outbound message to a guest."
+          }
+        },
+        {
+          "name": "Retrieve a message",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/messages/:id", "host": ["{{baseUrl}}"], "path": ["messages", ":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "description": "Retrieves a single message by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Custom Fields and Tags",
+      "item": [
+        {
+          "name": "List fields",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/fields", "host": ["{{baseUrl}}"], "path": ["fields"] }, "description": "Returns custom field values." }
+        },
+        {
+          "name": "Create field value",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"field_definition_id\": 1,\n  \"entity_id\": 1,\n  \"value\": \"example\"\n}" }, "url": { "raw": "{{baseUrl}}/fields", "host": ["{{baseUrl}}"], "path": ["fields"] }, "description": "Creates a custom field value." }
+        },
+        {
+          "name": "Retrieve field value",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/fields/:id", "host": ["{{baseUrl}}"], "path": ["fields", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a custom field value." }
+        },
+        {
+          "name": "Update field value",
+          "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"value\": \"updated\"\n}" }, "url": { "raw": "{{baseUrl}}/fields/:id", "host": ["{{baseUrl}}"], "path": ["fields", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Updates a custom field value." }
+        },
+        {
+          "name": "Delete field value",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/fields/:id", "host": ["{{baseUrl}}"], "path": ["fields", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Deletes a custom field value." }
+        },
+        {
+          "name": "Delete fields by definition",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/fields/bydefinition?field_definition_id=1&entity_id=1", "host": ["{{baseUrl}}"], "path": ["fields", "bydefinition"], "query": [{ "key": "field_definition_id", "value": "1" }, { "key": "entity_id", "value": "1" }] }, "description": "Deletes field values matching a definition and record." }
+        },
+        {
+          "name": "List field definitions",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/fielddefinitions", "host": ["{{baseUrl}}"], "path": ["fielddefinitions"] }, "description": "Returns the custom field definitions." }
+        },
+        {
+          "name": "Create field definition",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Gate Code\",\n  \"type\": \"text\"\n}" }, "url": { "raw": "{{baseUrl}}/fielddefinitions", "host": ["{{baseUrl}}"], "path": ["fielddefinitions"] }, "description": "Creates a new custom field definition." }
+        },
+        {
+          "name": "Retrieve field definition",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/fielddefinitions/:id", "host": ["{{baseUrl}}"], "path": ["fielddefinitions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a field definition." }
+        },
+        {
+          "name": "Update field definition",
+          "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/fielddefinitions/:id", "host": ["{{baseUrl}}"], "path": ["fielddefinitions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Updates a field definition." }
+        },
+        {
+          "name": "Delete field definition",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/fielddefinitions/:id", "host": ["{{baseUrl}}"], "path": ["fielddefinitions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Deletes a field definition." }
+        },
+        {
+          "name": "List tags",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/tags", "host": ["{{baseUrl}}"], "path": ["tags"] }, "description": "Returns tag values applied to records." }
+        },
+        {
+          "name": "Apply a tag",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"tag_definition_id\": 1,\n  \"entity_id\": 1\n}" }, "url": { "raw": "{{baseUrl}}/tags", "host": ["{{baseUrl}}"], "path": ["tags"] }, "description": "Applies a tag to a record." }
+        },
+        {
+          "name": "Retrieve a tag value",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/tags/:id", "host": ["{{baseUrl}}"], "path": ["tags", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a tag value." }
+        },
+        {
+          "name": "Delete a tag value",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/tags/:id", "host": ["{{baseUrl}}"], "path": ["tags", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Removes a tag value from a record." }
+        },
+        {
+          "name": "Delete a tag by name",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/tags/byname?name=VIP&entity_id=1", "host": ["{{baseUrl}}"], "path": ["tags", "byname"], "query": [{ "key": "name", "value": "VIP" }, { "key": "entity_id", "value": "1" }] }, "description": "Removes a tag from a record by name." }
+        },
+        {
+          "name": "List tag definitions",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/tagdefinitions", "host": ["{{baseUrl}}"], "path": ["tagdefinitions"] }, "description": "Returns the tag definitions." }
+        },
+        {
+          "name": "Create tag definition",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"VIP\"\n}" }, "url": { "raw": "{{baseUrl}}/tagdefinitions", "host": ["{{baseUrl}}"], "path": ["tagdefinitions"] }, "description": "Creates a new tag definition." }
+        },
+        {
+          "name": "Retrieve tag definition",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/tagdefinitions/:id", "host": ["{{baseUrl}}"], "path": ["tagdefinitions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a tag definition." }
+        },
+        {
+          "name": "Update tag definition",
+          "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/tagdefinitions/:id", "host": ["{{baseUrl}}"], "path": ["tagdefinitions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Updates a tag definition." }
+        },
+        {
+          "name": "Delete tag definition",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/tagdefinitions/:id", "host": ["{{baseUrl}}"], "path": ["tagdefinitions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Deletes a tag definition." }
+        }
+      ]
+    },
+    {
+      "name": "Financials",
+      "item": [
+        {
+          "name": "List payments",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/payments?booking_id=1", "host": ["{{baseUrl}}"], "path": ["payments"], "query": [{ "key": "booking_id", "value": "1" }] }, "description": "Returns payments recorded against bookings." }
+        },
+        {
+          "name": "Retrieve a payment",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/payments/:id", "host": ["{{baseUrl}}"], "path": ["payments", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a payment." }
+        },
+        {
+          "name": "List deposits",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/deposits", "host": ["{{baseUrl}}"], "path": ["deposits"] }, "description": "Returns security/damage deposits." }
+        },
+        {
+          "name": "Retrieve a deposit",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/deposits/:id", "host": ["{{baseUrl}}"], "path": ["deposits", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a deposit." }
+        },
+        {
+          "name": "List refunds",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/refunds", "host": ["{{baseUrl}}"], "path": ["refunds"] }, "description": "Returns refunds." }
+        },
+        {
+          "name": "Retrieve a refund",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/refunds/:id", "host": ["{{baseUrl}}"], "path": ["refunds", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a refund." }
+        },
+        {
+          "name": "List discounts",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/discounts", "host": ["{{baseUrl}}"], "path": ["discounts"] }, "description": "Returns discount rules." }
+        },
+        {
+          "name": "Create a discount",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"property_id\": 1,\n  \"name\": \"Weekly\",\n  \"amount\": 10,\n  \"is_percent\": true\n}" }, "url": { "raw": "{{baseUrl}}/discounts", "host": ["{{baseUrl}}"], "path": ["discounts"] }, "description": "Creates a discount rule." }
+        },
+        {
+          "name": "Retrieve a discount",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/discounts/:id", "host": ["{{baseUrl}}"], "path": ["discounts", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a discount." }
+        },
+        {
+          "name": "Update a discount",
+          "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/discounts/:id", "host": ["{{baseUrl}}"], "path": ["discounts", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Updates a discount." }
+        },
+        {
+          "name": "Delete a discount",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/discounts/:id", "host": ["{{baseUrl}}"], "path": ["discounts", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Deletes a discount." }
+        },
+        {
+          "name": "List fees",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/fees", "host": ["{{baseUrl}}"], "path": ["fees"] }, "description": "Returns fees." }
+        },
+        {
+          "name": "Retrieve a fee",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/fees/:id", "host": ["{{baseUrl}}"], "path": ["fees", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a fee." }
+        },
+        {
+          "name": "List surcharges",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/surcharges", "host": ["{{baseUrl}}"], "path": ["surcharges"] }, "description": "Returns surcharge rules." }
+        },
+        {
+          "name": "Create a surcharge",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"property_id\": 1,\n  \"name\": \"Cleaning\",\n  \"amount\": 150\n}" }, "url": { "raw": "{{baseUrl}}/surcharges", "host": ["{{baseUrl}}"], "path": ["surcharges"] }, "description": "Creates a surcharge rule." }
+        },
+        {
+          "name": "Retrieve a surcharge",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/surcharges/:id", "host": ["{{baseUrl}}"], "path": ["surcharges", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a surcharge." }
+        },
+        {
+          "name": "Update a surcharge",
+          "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/surcharges/:id", "host": ["{{baseUrl}}"], "path": ["surcharges", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Updates a surcharge." }
+        },
+        {
+          "name": "Delete a surcharge",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/surcharges/:id", "host": ["{{baseUrl}}"], "path": ["surcharges", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Deletes a surcharge." }
+        },
+        {
+          "name": "Update spot rates",
+          "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"property_id\": 1,\n  \"start_date\": \"2026-08-01\",\n  \"end_date\": \"2026-08-07\",\n  \"amount\": 250\n}" }, "url": { "raw": "{{baseUrl}}/spotrates", "host": ["{{baseUrl}}"], "path": ["spotrates"] }, "description": "Applies ad hoc nightly spot-rate overrides for a property." }
+        }
+      ]
+    },
+    {
+      "name": "Webhook Subscriptions",
+      "item": [
+        {
+          "name": "List webhook subscriptions",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/webhooksubscriptions", "host": ["{{baseUrl}}"], "path": ["webhooksubscriptions"] }, "description": "Returns outbound webhook subscriptions." }
+        },
+        {
+          "name": "Create a webhook subscription",
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"url\": \"https://example.com/hooks/ownerrez\",\n  \"categories\": [\"booking\"]\n}" }, "url": { "raw": "{{baseUrl}}/webhooksubscriptions", "host": ["{{baseUrl}}"], "path": ["webhooksubscriptions"] }, "description": "Creates an outbound webhook subscription." }
+        },
+        {
+          "name": "Retrieve a webhook subscription",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/webhooksubscriptions/:id", "host": ["{{baseUrl}}"], "path": ["webhooksubscriptions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves a webhook subscription." }
+        },
+        {
+          "name": "Delete a webhook subscription",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/webhooksubscriptions/:id", "host": ["{{baseUrl}}"], "path": ["webhooksubscriptions", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Deletes a webhook subscription." }
+        },
+        {
+          "name": "List webhook categories",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/webhooksubscriptions/categories", "host": ["{{baseUrl}}"], "path": ["webhooksubscriptions", "categories"] }, "description": "Returns the available webhook event categories." }
+        }
+      ]
+    },
+    {
+      "name": "Users and Owners",
+      "item": [
+        {
+          "name": "Retrieve the current user",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }, "description": "Returns the account/user context for the authenticated token." }
+        },
+        {
+          "name": "List owners",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/owners", "host": ["{{baseUrl}}"], "path": ["owners"] }, "description": "Returns property owners." }
+        },
+        {
+          "name": "Retrieve an owner",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/owners/:id", "host": ["{{baseUrl}}"], "path": ["owners", ":id"], "variable": [{ "key": "id", "value": "1" }] }, "description": "Retrieves an owner." }
+        }
+      ]
+    }
+  ]
+}

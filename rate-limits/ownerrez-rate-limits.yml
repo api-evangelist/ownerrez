@@ -1,0 +1,48 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: OwnerRez
+providerId: ownerrez
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Vacation Rental
+- Short-Term Rental
+- Property Management
+- Rate Limiting
+- Quotas
+description: >-
+  The OwnerRez API v2 is protected by a per-IP rate limit of 300 requests every
+  5 minutes. The limit is evaluated continuously; once an IP reaches it, all
+  further requests return HTTP 429 with a JSON error body, and the IP is
+  automatically unblocked once its request rate falls back below the limit.
+  OwnerRez recommends queuing work and avoiding inline processing when webhooks
+  are received so integrations stay within the limit.
+notes: >-
+  The documented limit is per source IP, not per account or per token. For most
+  integrations serving a few dozen users the default limit is sufficient when
+  following best practices. Verify current numbers in the API rate-limiting
+  support article during reconciliation.
+sources:
+- https://www.ownerrez.com/support/articles/api-rate-limiting
+- https://www.ownerrez.com/support/articles/api-overview
+- https://api.ownerrez.com/help/v2
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: ip
+  metric: requests
+  limit: 300 per 5 minutes
+  notes: Per-IP limit across the v2 API. Exceeding it returns HTTP 429 for all requests until the rate drops below the limit.
+policies:
+- name: Auto Unblock
+  description: A blocked IP is automatically unblocked once its request rate falls back below the 300-per-5-minute limit.
+- name: Queue and Defer
+  description: OwnerRez recommends queuing API work and avoiding inline processing on webhook receipt so bursts do not trip the limit.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter on 429 responses and spread requests across the 5-minute window.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

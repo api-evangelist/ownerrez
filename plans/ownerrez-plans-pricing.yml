@@ -1,0 +1,134 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: OwnerRez
+providerId: ownerrez
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Vacation Rental
+- Short-Term Rental
+- Property Management
+- Hospitality
+- Plans
+description: >-
+  OwnerRez is sold as a per-property SaaS subscription rather than a
+  metered/per-call API product. Pricing is billed per account on a sliding
+  scale: a $40/month minimum covers your first property (active or disabled),
+  and the effective per-property price decreases as you add more properties. A
+  14-day free trial (including premium features) is available with no contract.
+  Premium modules - such as the Property Management add-on, QuickBooks
+  integration, and hosted Websites - are billed separately on top of the base
+  subscription. The API v2 is included with an OwnerRez subscription; there is
+  no separate per-request API fee.
+notes: >-
+  Exact tier breakpoints on the sliding scale and premium-module rates are not
+  reconciled here; use the OwnerRez pricing calculator to compute a monthly
+  bill. Verify current numbers on the pricing page during reconciliation.
+sources:
+- https://www.ownerrez.com/pricing
+- https://www.ownerrez.com/support/articles/costs-and-fees
+- https://api.ownerrez.com/help/v2
+plans:
+- id: ownerrez-trial
+  name: Free Trial
+  type: free
+  description: >-
+    14-day free trial including premium features, with no hidden fees and no
+    contract. Full access to evaluate the platform and the API v2.
+  entries:
+  - label: Trial Period
+    name: trial_period
+    type: flat
+    metric: days
+    limit: 14
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: free for 14 days
+    userMultiplied: false
+  elements:
+  - name: Full Platform Access
+  - name: Premium Features Included
+  - name: API v2 Access
+- id: ownerrez-subscription
+  name: OwnerRez Subscription (Per Property)
+  type: paid
+  description: >-
+    Core OwnerRez subscription billed per account on a sliding per-property
+    scale. A $40/month minimum covers the first property; the per-property cost
+    decreases as property count grows. Includes bookings, guest CRM, quoting,
+    messaging, channel management, and the API v2.
+  entries:
+  - label: Minimum Monthly Fee
+    name: minimum_fee
+    type: flat
+    metric: account
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $40/month minimum (covers 1 property)
+    userMultiplied: false
+  - label: Per-Property Pricing
+    name: per_property
+    type: usage
+    metric: properties
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: sliding scale; per-property cost decreases with volume (see calculator)
+    userMultiplied: false
+  elements:
+  - name: Bookings and Reservations
+  - name: Guest CRM and Messaging
+  - name: Quoting and Pricing
+  - name: Channel Management
+  - name: Reviews
+  - name: API v2 and Webhooks
+- id: ownerrez-premium-modules
+  name: Premium Modules (Add-Ons)
+  type: paid
+  description: >-
+    Optional premium modules billed separately on top of the base subscription -
+    the Property Management add-on, QuickBooks integration, and hosted Websites.
+  entries:
+  - label: Property Management Add-On
+    name: property_management
+    type: flat
+    metric: module
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: additional per-property/module fee (see pricing page)
+    userMultiplied: false
+  - label: QuickBooks Integration
+    name: quickbooks
+    type: flat
+    metric: module
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: additional monthly fee
+    userMultiplied: false
+  - label: Websites (Hosting)
+    name: websites
+    type: flat
+    metric: module
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: additional monthly fee per site
+    userMultiplied: false
+  elements:
+  - name: Property Management
+  - name: QuickBooks Sync
+  - name: Hosted Booking Website
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

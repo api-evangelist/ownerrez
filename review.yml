@@ -1,0 +1,179 @@
+aid: ownerrez
+name: OwnerRez
+review:
+  question: Does OwnerRez expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-03'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. OwnerRez's public API v2 is
+    request/response REST/JSON over HTTPS. Its only server-push mechanism is
+    outbound webhooks - OwnerRez POSTs event notifications to a subscriber URL
+    configured via the WebhookSubscriptions resource. There is no
+    bidirectional or streaming WebSocket (ws:// or wss://) transport on
+    OwnerRez's own API to model, so an AsyncAPI document describing a WebSocket
+    channel would not correspond to any real surface.
+findings:
+  summary: |
+    OwnerRez does not publish a documented public WebSocket API. OwnerRez is
+    vacation-rental / short-term-rental property management software. Its
+    public developer surface is the OwnerRez API v2, a REST/JSON API served
+    under https://api.ownerrez.com/v2 and documented at
+    https://api.ownerrez.com/help/v2 (with a machine-readable operation index
+    at https://api.ownerrez.com/help/v2/index.md). Requests are authenticated
+    either with an OAuth 2.0 access token (Authorization Code Grant, RFC 6749
+    Section 4.1) or with an API key / Personal Access Token supplied as the
+    username in HTTP Basic auth. Server-to-app eventing is handled by outbound
+    webhooks (POSTs to a subscriber URL) managed through the
+    WebhookSubscriptions resource, not by a WebSocket. No realtime,
+    bidirectional, or streaming WebSocket endpoint is documented anywhere in
+    OwnerRez's API reference as of the review date.
+  openSource: |
+    The OwnerRez platform itself is closed-source, commercial SaaS. OwnerRez
+    does maintain a public GitHub organization (github.com/ownerrez) with
+    official open-source client tooling around the API - a Zapier integration
+    (orez-zapier), a WordPress plugin (orez-wp), and a PHP API wrapper
+    (orez-api-php) - but the core product and API service are not open source.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.ownerrez.com/v2
+      documented: true
+      note: The OwnerRez API v2. Request/response JSON over HTTPS. OAuth 2.0 bearer or HTTP Basic (API key/PAT as username).
+    - protocol: OAuth2
+      scheme: https
+      documented: true
+      note: Authorization Code Grant. Authorize at https://app.ownerrez.com/oauth/authorize, exchange code at https://api.ownerrez.com/oauth/access_token (alias /oauth/token).
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Outbound webhooks POST event notifications to a subscriber URL. Configured via the WebhookSubscriptions resource. Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the OwnerRez API v2 reference as of the review date.
+  endpointsConfirmedRest:
+    - GET    https://api.ownerrez.com/v2/bookings
+    - POST   https://api.ownerrez.com/v2/bookings
+    - GET    https://api.ownerrez.com/v2/bookings/{id}
+    - PATCH  https://api.ownerrez.com/v2/bookings/{id}
+    - GET    https://api.ownerrez.com/v2/properties
+    - GET    https://api.ownerrez.com/v2/properties/{id}
+    - GET    https://api.ownerrez.com/v2/propertysearch
+    - GET    https://api.ownerrez.com/v2/listings
+    - GET    https://api.ownerrez.com/v2/listings/{id}
+    - GET    https://api.ownerrez.com/v2/listingsites
+    - GET    https://api.ownerrez.com/v2/listingsites/{id}
+    - GET    https://api.ownerrez.com/v2/guests
+    - POST   https://api.ownerrez.com/v2/guests
+    - GET    https://api.ownerrez.com/v2/guests/{id}
+    - PATCH  https://api.ownerrez.com/v2/guests/{id}
+    - DELETE https://api.ownerrez.com/v2/guests/{id}
+    - DELETE https://api.ownerrez.com/v2/guests/{id}/addresses/{address_id}
+    - DELETE https://api.ownerrez.com/v2/guests/{id}/emailaddresses/{email_address_id}
+    - DELETE https://api.ownerrez.com/v2/guests/{id}/phones/{phone_id}
+    - GET    https://api.ownerrez.com/v2/inquiries
+    - GET    https://api.ownerrez.com/v2/inquiries/{id}
+    - GET    https://api.ownerrez.com/v2/quotes
+    - POST   https://api.ownerrez.com/v2/quotes
+    - GET    https://api.ownerrez.com/v2/quotes/{id}
+    - PATCH  https://api.ownerrez.com/v2/quotes/{id}
+    - DELETE https://api.ownerrez.com/v2/quotes/{id}
+    - GET    https://api.ownerrez.com/v2/reviews
+    - GET    https://api.ownerrez.com/v2/reviews/{id}
+    - GET    https://api.ownerrez.com/v2/messages
+    - POST   https://api.ownerrez.com/v2/messages
+    - GET    https://api.ownerrez.com/v2/messages/{id}
+    - GET    https://api.ownerrez.com/v2/fields
+    - POST   https://api.ownerrez.com/v2/fields
+    - GET    https://api.ownerrez.com/v2/fields/{id}
+    - PATCH  https://api.ownerrez.com/v2/fields/{id}
+    - DELETE https://api.ownerrez.com/v2/fields/{id}
+    - DELETE https://api.ownerrez.com/v2/fields/bydefinition
+    - GET    https://api.ownerrez.com/v2/fielddefinitions
+    - POST   https://api.ownerrez.com/v2/fielddefinitions
+    - GET    https://api.ownerrez.com/v2/fielddefinitions/{id}
+    - PATCH  https://api.ownerrez.com/v2/fielddefinitions/{id}
+    - DELETE https://api.ownerrez.com/v2/fielddefinitions/{id}
+    - GET    https://api.ownerrez.com/v2/tags
+    - POST   https://api.ownerrez.com/v2/tags
+    - GET    https://api.ownerrez.com/v2/tags/{id}
+    - DELETE https://api.ownerrez.com/v2/tags/{id}
+    - DELETE https://api.ownerrez.com/v2/tags/byname
+    - GET    https://api.ownerrez.com/v2/tagdefinitions
+    - POST   https://api.ownerrez.com/v2/tagdefinitions
+    - GET    https://api.ownerrez.com/v2/tagdefinitions/{id}
+    - PATCH  https://api.ownerrez.com/v2/tagdefinitions/{id}
+    - DELETE https://api.ownerrez.com/v2/tagdefinitions/{id}
+    - GET    https://api.ownerrez.com/v2/webhooksubscriptions
+    - POST   https://api.ownerrez.com/v2/webhooksubscriptions
+    - GET    https://api.ownerrez.com/v2/webhooksubscriptions/{id}
+    - DELETE https://api.ownerrez.com/v2/webhooksubscriptions/{id}
+    - GET    https://api.ownerrez.com/v2/webhooksubscriptions/categories
+    - GET    https://api.ownerrez.com/v2/users/me
+    - GET    https://api.ownerrez.com/v2/owners
+    - GET    https://api.ownerrez.com/v2/owners/{id}
+    - GET    https://api.ownerrez.com/v2/payments
+    - GET    https://api.ownerrez.com/v2/payments/{id}
+    - GET    https://api.ownerrez.com/v2/deposits
+    - GET    https://api.ownerrez.com/v2/deposits/{id}
+    - GET    https://api.ownerrez.com/v2/refunds
+    - GET    https://api.ownerrez.com/v2/refunds/{id}
+    - GET    https://api.ownerrez.com/v2/discounts
+    - POST   https://api.ownerrez.com/v2/discounts
+    - GET    https://api.ownerrez.com/v2/discounts/{id}
+    - PATCH  https://api.ownerrez.com/v2/discounts/{id}
+    - DELETE https://api.ownerrez.com/v2/discounts/{id}
+    - GET    https://api.ownerrez.com/v2/fees
+    - GET    https://api.ownerrez.com/v2/fees/{id}
+    - GET    https://api.ownerrez.com/v2/surcharges
+    - POST   https://api.ownerrez.com/v2/surcharges
+    - GET    https://api.ownerrez.com/v2/surcharges/{id}
+    - PATCH  https://api.ownerrez.com/v2/surcharges/{id}
+    - DELETE https://api.ownerrez.com/v2/surcharges/{id}
+    - PATCH  https://api.ownerrez.com/v2/spotrates
+  endpointsModeled:
+    - note: >-
+        All endpoint paths and HTTP methods above are confirmed against the
+        published machine-readable operation index at
+        https://api.ownerrez.com/help/v2/index.md. The request and response
+        body property schemas in openapi/ownerrez-openapi.yml are modeled
+        representatively (field names, types, and pagination envelope) and
+        should be verified field-by-field against the interactive reference at
+        https://api.ownerrez.com/help/v2.
+sources:
+  - url: https://api.ownerrez.com/help/v2
+    type: APIReference
+    note: OwnerRez API v2 interactive reference. Base URL, resources, OAuth2 + HTTP Basic auth. No WebSocket.
+  - url: https://api.ownerrez.com/help/v2/index.md
+    type: APIReference
+    note: Machine-readable operation index; source of the confirmed endpoint paths and methods.
+  - url: https://www.ownerrez.com/support/articles/api-overview
+    type: Documentation
+    note: API for Apps overview. REST/JSON, OAuth apps, webhooks.
+  - url: https://www.ownerrez.com/support/articles/api-auth
+    type: Documentation
+    note: Authentication - OAuth 2.0 Authorization Code Grant and API key via HTTP Basic.
+  - url: https://www.ownerrez.com/support/articles/api-webhooks
+    type: Documentation
+    note: Outbound webhooks (reverse API). Server-to-endpoint HTTP POST, not WebSocket.
+  - url: https://www.ownerrez.com/support/articles/api-rate-limiting
+    type: Documentation
+    note: 300 requests per 5 minutes per IP; 429 on exceed; auto-unblock.
+  - url: https://github.com/ownerrez
+    type: SourceCode
+    note: Public org with open-source client tooling (Zapier, WordPress, PHP wrapper); core product is closed-source.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. OwnerRez's public API is
+    request/response REST (API v2) with outbound webhooks for server-to-app
+    eventing. No AsyncAPI document was created because there is no server-push
+    WebSocket transport on OwnerRez's own API to model; webhooks are ordinary
+    HTTP POSTs to a subscriber URL and are represented by the
+    WebhookSubscriptions REST resource.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

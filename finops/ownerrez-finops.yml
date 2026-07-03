@@ -1,0 +1,91 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: OwnerRez
+providerId: ownerrez
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Vacation Rental
+- Short-Term Rental
+- Property Management
+- Hospitality
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of OwnerRez spend. OwnerRez is a per-property SaaS subscription:
+  the dominant cost driver is the number of properties under management, billed
+  monthly per account on a sliding scale above a $40/month minimum. The API v2
+  is included in the subscription with no separate per-request charge, so API
+  usage itself is not a metered cost line - the cost is the underlying seat/
+  property count plus any premium modules (Property Management, QuickBooks,
+  hosted Websites) enabled on the account.
+notes: >-
+  Per-property tier rates and premium-module fees are not reconciled here;
+  verify on the OwnerRez pricing page and calculator. Cost optimization is
+  primarily about right-sizing the property count (disabling unused properties
+  still counts toward the minimum) and only enabling premium modules that are
+  used.
+sources:
+- https://www.ownerrez.com/pricing
+- https://www.ownerrez.com/support/articles/costs-and-fees
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: OwnerRez
+serviceCategory: Property Management Software
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+focusColumns:
+  ServiceName: OwnerRez
+  ServiceCategory: Property Management Software
+  ProviderName: OwnerRez
+  PublisherName: OwnerRez
+  InvoiceIssuerName: OwnerRez
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Subscription-Based
+meters:
+- name: properties
+  description: Number of properties under management, the primary per-property subscription cost driver (sliding scale above the $40/month minimum).
+  unit: properties
+  aggregation: max
+  dimensions:
+  - account
+- name: premium_modules
+  description: Premium add-on modules enabled - Property Management, QuickBooks integration, and hosted Websites - each billed separately.
+  unit: modules
+  aggregation: sum
+  dimensions:
+  - account
+  - module
+- name: api_requests
+  description: API v2 requests. Included in the subscription (not separately billed); tracked only against the 300-per-5-minute rate limit.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - ip
+principles:
+- name: Visibility
+  description: Track active vs disabled property counts and enabled premium modules against the single monthly account invoice.
+- name: Allocation
+  description: Map property counts and premium modules to owners or portfolios so subscription cost maps to internal cost centers.
+- name: Optimization
+  description: Remove properties no longer managed (disabled properties still count toward the minimum), and disable premium modules that are not used.
+- name: Accountability
+  description: Assign an owner for the OwnerRez account; review the monthly invoice against property count and module changes.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OwnerRez API v2",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{apiKey}}",
+      "password": ""
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Bookings", "type": "folder" },
+      "items": [
+        { "info": { "name": "List bookings.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/bookings", "params": [ { "name": "property_ids", "value": "", "type": "query", "description": "Filter by property IDs." }, { "name": "from", "value": "", "type": "query", "description": "Arrival window start (YYYY-MM-DD)." }, { "name": "to", "value": "", "type": "query", "description": "Arrival window end (YYYY-MM-DD)." } ] }, "docs": "Returns a paginated list of bookings." },
+        { "info": { "name": "Create a booking.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/bookings", "body": { "type": "json", "data": "{\n  \"property_id\": 1,\n  \"arrival\": \"2026-08-01\",\n  \"departure\": \"2026-08-07\"\n}" } }, "docs": "Creates a new booking." },
+        { "info": { "name": "Retrieve a booking.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/bookings/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The booking ID." } ] }, "docs": "Retrieves a single booking by ID." },
+        { "info": { "name": "Update a booking.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/bookings/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The booking ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Partially updates a booking." }
+      ]
+    },
+    {
+      "info": { "name": "Properties", "type": "folder" },
+      "items": [
+        { "info": { "name": "List properties.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/properties" }, "docs": "Returns a paginated list of properties." },
+        { "info": { "name": "Retrieve a property.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/properties/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The property ID." } ] }, "docs": "Retrieves a single property by ID." },
+        { "info": { "name": "Search properties.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/propertysearch", "params": [ { "name": "from", "value": "", "type": "query", "description": "Arrival date." }, { "name": "to", "value": "", "type": "query", "description": "Departure date." }, { "name": "guests", "value": "", "type": "query", "description": "Number of guests." } ] }, "docs": "Searches properties by availability and occupancy." }
+      ]
+    },
+    {
+      "info": { "name": "Listings", "type": "folder" },
+      "items": [
+        { "info": { "name": "List listings.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/listings" }, "docs": "Returns a paginated list of listings." },
+        { "info": { "name": "Retrieve a listing.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/listings/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The listing ID." } ] }, "docs": "Retrieves a single listing by ID." },
+        { "info": { "name": "List listing sites.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/listingsites" }, "docs": "Returns the channel listing sites." },
+        { "info": { "name": "Retrieve a listing site.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/listingsites/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The listing site ID." } ] }, "docs": "Retrieves a single listing site by ID." }
+      ]
+    },
+    {
+      "info": { "name": "Guests", "type": "folder" },
+      "items": [
+        { "info": { "name": "List guests.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/guests" }, "docs": "Returns a paginated list of guest records." },
+        { "info": { "name": "Create a guest.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/guests", "body": { "type": "json", "data": "{\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Doe\"\n}" } }, "docs": "Creates a new guest record." },
+        { "info": { "name": "Retrieve a guest.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/guests/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The guest ID." } ] }, "docs": "Retrieves a single guest by ID." },
+        { "info": { "name": "Update a guest.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/guests/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The guest ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Partially updates a guest." },
+        { "info": { "name": "Delete a guest.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/guests/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The guest ID." } ] }, "docs": "Deletes a guest record." },
+        { "info": { "name": "Delete a guest address.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/guests/:id/addresses/:address_id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The guest ID." }, { "name": "address_id", "value": "", "type": "path", "description": "The address ID." } ] }, "docs": "Removes an address from a guest." },
+        { "info": { "name": "Delete a guest email address.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/guests/:id/emailaddresses/:email_address_id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The guest ID." }, { "name": "email_address_id", "value": "", "type": "path", "description": "The email address ID." } ] }, "docs": "Removes an email address from a guest." },
+        { "info": { "name": "Delete a guest phone.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/guests/:id/phones/:phone_id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The guest ID." }, { "name": "phone_id", "value": "", "type": "path", "description": "The phone ID." } ] }, "docs": "Removes a phone number from a guest." }
+      ]
+    },
+    {
+      "info": { "name": "Inquiries", "type": "folder" },
+      "items": [
+        { "info": { "name": "List inquiries.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/inquiries" }, "docs": "Returns a paginated list of inquiries." },
+        { "info": { "name": "Retrieve an inquiry.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/inquiries/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The inquiry ID." } ] }, "docs": "Retrieves a single inquiry by ID." }
+      ]
+    },
+    {
+      "info": { "name": "Quotes", "type": "folder" },
+      "items": [
+        { "info": { "name": "List quotes.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/quotes" }, "docs": "Returns a paginated list of quotes." },
+        { "info": { "name": "Create a quote.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/quotes", "body": { "type": "json", "data": "{\n  \"property_id\": 1,\n  \"arrival\": \"2026-08-01\",\n  \"departure\": \"2026-08-07\"\n}" } }, "docs": "Creates a new price quote." },
+        { "info": { "name": "Retrieve a quote.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/quotes/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The quote ID." } ] }, "docs": "Retrieves a single quote by ID." },
+        { "info": { "name": "Update a quote.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/quotes/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The quote ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Partially updates a quote." },
+        { "info": { "name": "Delete a quote.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/quotes/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The quote ID." } ] }, "docs": "Deletes a quote." }
+      ]
+    },
+    {
+      "info": { "name": "Reviews", "type": "folder" },
+      "items": [
+        { "info": { "name": "List reviews.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/reviews" }, "docs": "Returns a paginated list of reviews." },
+        { "info": { "name": "Retrieve a review.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/reviews/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The review ID." } ] }, "docs": "Retrieves a single review by ID." }
+      ]
+    },
+    {
+      "info": { "name": "Messages", "type": "folder" },
+      "items": [
+        { "info": { "name": "List messages.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/messages", "params": [ { "name": "booking_id", "value": "", "type": "query", "description": "Filter by booking ID." } ] }, "docs": "Returns a paginated list of messages." },
+        { "info": { "name": "Send a message.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/messages", "body": { "type": "json", "data": "{\n  \"booking_id\": 1,\n  \"body\": \"Your check-in details are ready.\"\n}" } }, "docs": "Sends an outbound message to a guest." },
+        { "info": { "name": "Retrieve a message.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/messages/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The message ID." } ] }, "docs": "Retrieves a single message by ID." }
+      ]
+    },
+    {
+      "info": { "name": "Custom Fields and Tags", "type": "folder" },
+      "items": [
+        { "info": { "name": "List fields.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/fields" }, "docs": "Returns custom field values." },
+        { "info": { "name": "Create field value.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/fields", "body": { "type": "json", "data": "{\n  \"field_definition_id\": 1,\n  \"entity_id\": 1,\n  \"value\": \"example\"\n}" } }, "docs": "Creates a custom field value." },
+        { "info": { "name": "Retrieve field value.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/fields/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The field value ID." } ] }, "docs": "Retrieves a custom field value." },
+        { "info": { "name": "Update field value.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/fields/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The field value ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Updates a custom field value." },
+        { "info": { "name": "Delete field value.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/fields/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The field value ID." } ] }, "docs": "Deletes a custom field value." },
+        { "info": { "name": "Delete fields by definition.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/fields/bydefinition", "params": [ { "name": "field_definition_id", "value": "", "type": "query", "description": "The field definition ID." }, { "name": "entity_id", "value": "", "type": "query", "description": "The target record ID." } ] }, "docs": "Deletes field values matching a definition and record." },
+        { "info": { "name": "List field definitions.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/fielddefinitions" }, "docs": "Returns the custom field definitions." },
+        { "info": { "name": "Create field definition.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/fielddefinitions", "body": { "type": "json", "data": "{\n  \"name\": \"Gate Code\",\n  \"type\": \"text\"\n}" } }, "docs": "Creates a new custom field definition." },
+        { "info": { "name": "Retrieve field definition.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/fielddefinitions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The field definition ID." } ] }, "docs": "Retrieves a field definition." },
+        { "info": { "name": "Update field definition.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/fielddefinitions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The field definition ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Updates a field definition." },
+        { "info": { "name": "Delete field definition.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/fielddefinitions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The field definition ID." } ] }, "docs": "Deletes a field definition." },
+        { "info": { "name": "List tags.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/tags" }, "docs": "Returns tag values applied to records." },
+        { "info": { "name": "Apply a tag.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/tags", "body": { "type": "json", "data": "{\n  \"tag_definition_id\": 1,\n  \"entity_id\": 1\n}" } }, "docs": "Applies a tag to a record." },
+        { "info": { "name": "Retrieve a tag value.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/tags/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The tag value ID." } ] }, "docs": "Retrieves a tag value." },
+        { "info": { "name": "Delete a tag value.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/tags/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The tag value ID." } ] }, "docs": "Removes a tag value from a record." },
+        { "info": { "name": "Delete a tag by name.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/tags/byname", "params": [ { "name": "name", "value": "", "type": "query", "description": "The tag name." }, { "name": "entity_id", "value": "", "type": "query", "description": "The target record ID." } ] }, "docs": "Removes a tag from a record by name." },
+        { "info": { "name": "List tag definitions.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/tagdefinitions" }, "docs": "Returns the tag definitions." },
+        { "info": { "name": "Create tag definition.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/tagdefinitions", "body": { "type": "json", "data": "{\n  \"name\": \"VIP\"\n}" } }, "docs": "Creates a new tag definition." },
+        { "info": { "name": "Retrieve tag definition.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/tagdefinitions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The tag definition ID." } ] }, "docs": "Retrieves a tag definition." },
+        { "info": { "name": "Update tag definition.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/tagdefinitions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The tag definition ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Updates a tag definition." },
+        { "info": { "name": "Delete tag definition.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/tagdefinitions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The tag definition ID." } ] }, "docs": "Deletes a tag definition." }
+      ]
+    },
+    {
+      "info": { "name": "Financials", "type": "folder" },
+      "items": [
+        { "info": { "name": "List payments.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/payments", "params": [ { "name": "booking_id", "value": "", "type": "query", "description": "Filter by booking ID." } ] }, "docs": "Returns payments recorded against bookings." },
+        { "info": { "name": "Retrieve a payment.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/payments/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The payment ID." } ] }, "docs": "Retrieves a payment." },
+        { "info": { "name": "List deposits.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/deposits" }, "docs": "Returns security/damage deposits." },
+        { "info": { "name": "Retrieve a deposit.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/deposits/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The deposit ID." } ] }, "docs": "Retrieves a deposit." },
+        { "info": { "name": "List refunds.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/refunds" }, "docs": "Returns refunds." },
+        { "info": { "name": "Retrieve a refund.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/refunds/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The refund ID." } ] }, "docs": "Retrieves a refund." },
+        { "info": { "name": "List discounts.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/discounts" }, "docs": "Returns discount rules." },
+        { "info": { "name": "Create a discount.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/discounts", "body": { "type": "json", "data": "{\n  \"property_id\": 1,\n  \"name\": \"Weekly\",\n  \"amount\": 10,\n  \"is_percent\": true\n}" } }, "docs": "Creates a discount rule." },
+        { "info": { "name": "Retrieve a discount.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/discounts/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The discount ID." } ] }, "docs": "Retrieves a discount." },
+        { "info": { "name": "Update a discount.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/discounts/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The discount ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Updates a discount." },
+        { "info": { "name": "Delete a discount.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/discounts/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The discount ID." } ] }, "docs": "Deletes a discount." },
+        { "info": { "name": "List fees.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/fees" }, "docs": "Returns fees." },
+        { "info": { "name": "Retrieve a fee.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/fees/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The fee ID." } ] }, "docs": "Retrieves a fee." },
+        { "info": { "name": "List surcharges.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/surcharges" }, "docs": "Returns surcharge rules." },
+        { "info": { "name": "Create a surcharge.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/surcharges", "body": { "type": "json", "data": "{\n  \"property_id\": 1,\n  \"name\": \"Cleaning\",\n  \"amount\": 150\n}" } }, "docs": "Creates a surcharge rule." },
+        { "info": { "name": "Retrieve a surcharge.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/surcharges/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The surcharge ID." } ] }, "docs": "Retrieves a surcharge." },
+        { "info": { "name": "Update a surcharge.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/surcharges/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The surcharge ID." } ], "body": { "type": "json", "data": "{}" } }, "docs": "Updates a surcharge." },
+        { "info": { "name": "Delete a surcharge.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/surcharges/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The surcharge ID." } ] }, "docs": "Deletes a surcharge." },
+        { "info": { "name": "Update spot rates.", "type": "http" }, "http": { "method": "PATCH", "url": "https://api.ownerrez.com/v2/spotrates", "body": { "type": "json", "data": "{\n  \"property_id\": 1,\n  \"start_date\": \"2026-08-01\",\n  \"end_date\": \"2026-08-07\",\n  \"amount\": 250\n}" } }, "docs": "Applies ad hoc nightly spot-rate overrides for a property." }
+      ]
+    },
+    {
+      "info": { "name": "Webhook Subscriptions", "type": "folder" },
+      "items": [
+        { "info": { "name": "List webhook subscriptions.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/webhooksubscriptions" }, "docs": "Returns outbound webhook subscriptions." },
+        { "info": { "name": "Create a webhook subscription.", "type": "http" }, "http": { "method": "POST", "url": "https://api.ownerrez.com/v2/webhooksubscriptions", "body": { "type": "json", "data": "{\n  \"url\": \"https://example.com/hooks/ownerrez\",\n  \"categories\": [\"booking\"]\n}" } }, "docs": "Creates an outbound webhook subscription." },
+        { "info": { "name": "Retrieve a webhook subscription.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/webhooksubscriptions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The subscription ID." } ] }, "docs": "Retrieves a webhook subscription." },
+        { "info": { "name": "Delete a webhook subscription.", "type": "http" }, "http": { "method": "DELETE", "url": "https://api.ownerrez.com/v2/webhooksubscriptions/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The subscription ID." } ] }, "docs": "Deletes a webhook subscription." },
+        { "info": { "name": "List webhook categories.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/webhooksubscriptions/categories" }, "docs": "Returns the available webhook event categories." }
+      ]
+    },
+    {
+      "info": { "name": "Users and Owners", "type": "folder" },
+      "items": [
+        { "info": { "name": "Retrieve the current user.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/users/me" }, "docs": "Returns the account/user context for the authenticated token." },
+        { "info": { "name": "List owners.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/owners" }, "docs": "Returns property owners." },
+        { "info": { "name": "Retrieve an owner.", "type": "http" }, "http": { "method": "GET", "url": "https://api.ownerrez.com/v2/owners/:id", "params": [ { "name": "id", "value": "", "type": "path", "description": "The owner ID." } ] }, "docs": "Retrieves an owner." }
+      ]
+    }
+  ]
+}
