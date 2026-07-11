@@ -213,6 +213,10 @@ apis:
     and enumerate the available event categories. OwnerRez POSTs event
     notifications to your subscribed URL; there is no public WebSocket API.
 common:
+- type: DomainSecurity
+  url: security/ownerrez-domain-security.yml
+- type: Authentication
+  url: authentication/ownerrez-authentication.yml
 - type: OAuthScopes
   url: scopes/ownerrez-scopes.yml
 - type: GitHubOrganization

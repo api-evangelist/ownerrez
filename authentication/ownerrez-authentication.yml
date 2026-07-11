@@ -1,0 +1,29 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/ownerrez-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token
+    as the username; the password is left blank.
+  sources:
+  - openapi/ownerrez-openapi.yml
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://app.ownerrez.com/oauth/authorize
+    tokenUrl: https://api.ownerrez.com/oauth/access_token
+    scopes: 0
+  description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth
+    app in the OwnerRez Developer/API settings, send the user to the authorization URL, then
+    exchange the returned code for an access token.
+  sources:
+  - openapi/ownerrez-openapi.yml
