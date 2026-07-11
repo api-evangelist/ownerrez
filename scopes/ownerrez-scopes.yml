@@ -1,0 +1,26 @@
+generated: '2026-07-11'
+method: searched
+source: openapi/ownerrez-openapi.yml
+docs: https://www.ownerrez.com/support/articles/api-oauth-app
+schemes:
+- name: oauth2
+  source: openapi/ownerrez-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://app.ownerrez.com/oauth/authorize
+    tokenUrl: https://api.ownerrez.com/oauth/access_token
+  description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth
+    app in the OwnerRez Developer/API settings, send the user to the authorization URL, then
+    exchange the returned code for an access token.
+scopes:
+- scope: full
+  description: Full access to all API endpoints (read and write). Requested as scope=full
+    on the authorization URL and returned as "scope":"full" in the access token response.
+  sources:
+  - https://www.ownerrez.com/support/articles/api-oauth-app
+- scope: read
+  description: Read-only access, limiting the token to GET endpoints only. Set via the OAuth
+    app's "OAuth API scope" setting ("Read" instead of "Full"); a Read app cannot create
+    read & write tokens later.
+  sources:
+  - https://www.ownerrez.com/support/articles/api-oauth-app

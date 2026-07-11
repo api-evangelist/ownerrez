@@ -213,6 +213,8 @@ apis:
     and enumerate the available event categories. OwnerRez POSTs event
     notifications to your subscribed URL; there is no public WebSocket API.
 common:
+- type: OAuthScopes
+  url: scopes/ownerrez-scopes.yml
 - type: GitHubOrganization
   url: https://github.com/ownerrez
 - type: LinkedIn
@@ -227,6 +229,8 @@ common:
   url: rate-limits/ownerrez-rate-limits.yml
 - type: FinOps
   url: finops/ownerrez-finops.yml
+- url: https://www.ownerrez.com/blog
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
