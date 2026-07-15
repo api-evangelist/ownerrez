@@ -213,6 +213,8 @@ apis:
     and enumerate the available event categories. OwnerRez POSTs event
     notifications to your subscribed URL; there is no public WebSocket API.
 common:
+- type: AgenticAccess
+  url: agentic-access/ownerrez-agentic-access.yml
 - type: DomainSecurity
   url: security/ownerrez-domain-security.yml
 - type: Authentication
