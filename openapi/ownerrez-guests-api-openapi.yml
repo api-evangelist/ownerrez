@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: OwnerRez API v2 Bookings Guests API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  version: '2.0'
+  contact:
+    name: OwnerRez
+    url: https://www.ownerrez.com
+  termsOfService: https://www.ownerrez.com/legal/terms
+servers:
+- url: https://api.ownerrez.com/v2
+  description: OwnerRez API v2 (production)
+security:
+- basicAuth: []
+- oauth2: []
+tags:
+- name: Guests
+  description: Guest contact records and their addresses, emails, and phones.
+paths:
+  /guests:
+    get:
+      operationId: listGuests
+      tags:
+      - Guests
+      summary: List guests
+      description: Returns a paginated list of guest contact records.
+      parameters:
+      - name: q
+        in: query
+        description: Free-text search across guest name and contact details.
+        schema:
+          type: string
+      - name: created_since_utc
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          $ref: '#/components/responses/GuestList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createGuest
+      tags:
+      - Guests
+      summary: Create a guest
+      description: Creates a new guest contact record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/Guest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /guests/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getGuest
+      tags:
+      - Guests
+      summary: Retrieve a guest
+      description: Retrieves a single guest by identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/Guest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateGuest
+      tags:
+      - Guests
+      summary: Update a guest
+      description: Partially updates a guest record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuestInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/Guest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      operationId: deleteGuest
+      tags:
+      - Guests
+      summary: Delete a guest
+      description: Deletes a guest record.
+      responses:
+        '200':
+          $ref: '#/components/responses/Deleted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /guests/{id}/addresses/{address_id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - name: address_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      operationId: deleteGuestAddress
+      tags:
+      - Guests
+      summary: Delete a guest address
+      description: Removes an address from a guest record.
+      responses:
+        '200':
+          $ref: '#/components/responses/Deleted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /guests/{id}/emailaddresses/{email_address_id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - name: email_address_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      operationId: deleteGuestEmailAddress
+      tags:
+      - Guests
+      summary: Delete a guest email address
+      description: Removes an email address from a guest record.
+      responses:
+        '200':
+          $ref: '#/components/responses/Deleted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /guests/{id}/phones/{phone_id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    - name: phone_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      operationId: deleteGuestPhone
+      tags:
+      - Guests
+      summary: Delete a guest phone
+      description: Removes a phone number from a guest record.
+      responses:
+        '200':
+          $ref: '#/components/responses/Deleted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type: string
+          nullable: true
+    GuestPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Guest'
+    Guest:
+      allOf:
+      - $ref: '#/components/schemas/GuestInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          created_utc:
+            type: string
+            format: date-time
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    GuestInput:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email_addresses:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        phones:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        addresses:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        notes:
+          type: string
+  responses:
+    Guest:
+      description: A guest.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Guest'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    GuestList:
+      description: A page of guests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GuestPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token as the username; the password is left blank.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth app in the OwnerRez Developer/API settings, send the user to the authorization URL, then exchange the returned code for an access token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.ownerrez.com/oauth/authorize
+          tokenUrl: https://api.ownerrez.com/oauth/access_token
+          scopes: {}

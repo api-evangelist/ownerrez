@@ -1,0 +1,206 @@
+openapi: 3.0.3
+info:
+  title: OwnerRez API v2 Bookings Messages API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  version: '2.0'
+  contact:
+    name: OwnerRez
+    url: https://www.ownerrez.com
+  termsOfService: https://www.ownerrez.com/legal/terms
+servers:
+- url: https://api.ownerrez.com/v2
+  description: OwnerRez API v2 (production)
+security:
+- basicAuth: []
+- oauth2: []
+tags:
+- name: Messages
+  description: Guest messaging threads and outbound messages.
+paths:
+  /messages:
+    get:
+      operationId: listMessages
+      tags:
+      - Messages
+      summary: List messages
+      description: Returns a paginated list of guest messages.
+      parameters:
+      - name: booking_id
+        in: query
+        schema:
+          type: integer
+      - name: since_utc
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          $ref: '#/components/responses/MessageList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createMessage
+      tags:
+      - Messages
+      summary: Send a message
+      description: Sends an outbound message to a guest.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/Message'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /messages/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getMessage
+      tags:
+      - Messages
+      summary: Retrieve a message
+      description: Retrieves a single message by identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/Message'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type: string
+          nullable: true
+    MessagePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Message'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    MessageInput:
+      type: object
+      required:
+      - booking_id
+      - body
+      properties:
+        booking_id:
+          type: integer
+        body:
+          type: string
+        is_automated:
+          type: boolean
+    Message:
+      allOf:
+      - $ref: '#/components/schemas/MessageInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          direction:
+            type: string
+            enum:
+            - incoming
+            - outgoing
+          sent_utc:
+            type: string
+            format: date-time
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+  responses:
+    Message:
+      description: A message.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    MessageList:
+      description: A page of messages.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessagePage'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token as the username; the password is left blank.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth app in the OwnerRez Developer/API settings, send the user to the authorization URL, then exchange the returned code for an access token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.ownerrez.com/oauth/authorize
+          tokenUrl: https://api.ownerrez.com/oauth/access_token
+          scopes: {}

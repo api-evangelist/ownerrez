@@ -1,0 +1,238 @@
+openapi: 3.0.3
+info:
+  title: OwnerRez API v2 Bookings FieldDefinitions API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  version: '2.0'
+  contact:
+    name: OwnerRez
+    url: https://www.ownerrez.com
+  termsOfService: https://www.ownerrez.com/legal/terms
+servers:
+- url: https://api.ownerrez.com/v2
+  description: OwnerRez API v2 (production)
+security:
+- basicAuth: []
+- oauth2: []
+tags:
+- name: FieldDefinitions
+  description: Definitions of custom fields.
+paths:
+  /fielddefinitions:
+    get:
+      operationId: listFieldDefinitions
+      tags:
+      - FieldDefinitions
+      summary: List field definitions
+      description: Returns the custom field definitions.
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          $ref: '#/components/responses/FieldDefinitionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createFieldDefinition
+      tags:
+      - FieldDefinitions
+      summary: Create a field definition
+      description: Creates a new custom field definition.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FieldDefinitionInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/FieldDefinition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /fielddefinitions/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getFieldDefinition
+      tags:
+      - FieldDefinitions
+      summary: Retrieve a field definition
+      description: Retrieves a single field definition by identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/FieldDefinition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateFieldDefinition
+      tags:
+      - FieldDefinitions
+      summary: Update a field definition
+      description: Updates a custom field definition.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FieldDefinitionInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/FieldDefinition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteFieldDefinition
+      tags:
+      - FieldDefinitions
+      summary: Delete a field definition
+      description: Deletes a custom field definition.
+      responses:
+        '200':
+          $ref: '#/components/responses/Deleted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type: string
+          nullable: true
+    FieldDefinitionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldDefinition'
+    FieldDefinition:
+      allOf:
+      - $ref: '#/components/schemas/FieldDefinitionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    FieldDefinitionInput:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        entity_type:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+  responses:
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    FieldDefinitionList:
+      description: A page of field definitions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldDefinitionPage'
+    FieldDefinition:
+      description: A field definition.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldDefinition'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token as the username; the password is left blank.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth app in the OwnerRez Developer/API settings, send the user to the authorization URL, then exchange the returned code for an access token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.ownerrez.com/oauth/authorize
+          tokenUrl: https://api.ownerrez.com/oauth/access_token
+          scopes: {}

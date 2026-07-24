@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: OwnerRez API v2 Bookings Listings API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  version: '2.0'
+  contact:
+    name: OwnerRez
+    url: https://www.ownerrez.com
+  termsOfService: https://www.ownerrez.com/legal/terms
+servers:
+- url: https://api.ownerrez.com/v2
+  description: OwnerRez API v2 (production)
+security:
+- basicAuth: []
+- oauth2: []
+tags:
+- name: Listings
+  description: Public listing content and channel listing sites for properties.
+paths:
+  /listings:
+    get:
+      operationId: listListings
+      tags:
+      - Listings
+      summary: List listings
+      description: Returns a paginated list of property listings.
+      parameters:
+      - $ref: '#/components/parameters/PropertyIds'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListingList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /listings/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getListing
+      tags:
+      - Listings
+      summary: Retrieve a listing
+      description: Retrieves a single listing by its identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/Listing'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /listingsites:
+    get:
+      operationId: listListingSites
+      tags:
+      - Listings
+      summary: List listing sites
+      description: Returns the channel listing sites (e.g. Airbnb, Vrbo) available.
+      responses:
+        '200':
+          $ref: '#/components/responses/ListingSiteList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /listingsites/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getListingSite
+      tags:
+      - Listings
+      summary: Retrieve a listing site
+      description: Retrieves a single listing site by its identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/ListingSite'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type: string
+          nullable: true
+    ListingPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Listing'
+    ListingSite:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+    ListingSitePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListingSite'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    Listing:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        headline:
+          type: string
+  responses:
+    ListingSiteList:
+      description: A page of listing sites.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingSitePage'
+    Listing:
+      description: A listing.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Listing'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ListingList:
+      description: A page of listings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingPage'
+    ListingSite:
+      description: A listing site.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingSite'
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token as the username; the password is left blank.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth app in the OwnerRez Developer/API settings, send the user to the authorization URL, then exchange the returned code for an access token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.ownerrez.com/oauth/authorize
+          tokenUrl: https://api.ownerrez.com/oauth/access_token
+          scopes: {}

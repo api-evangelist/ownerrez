@@ -1,0 +1,274 @@
+openapi: 3.0.3
+info:
+  title: OwnerRez API v2 Bookings API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  version: '2.0'
+  contact:
+    name: OwnerRez
+    url: https://www.ownerrez.com
+  termsOfService: https://www.ownerrez.com/legal/terms
+servers:
+- url: https://api.ownerrez.com/v2
+  description: OwnerRez API v2 (production)
+security:
+- basicAuth: []
+- oauth2: []
+tags:
+- name: Bookings
+  description: Reservations against a property, including dates, guest, and charges.
+paths:
+  /bookings:
+    get:
+      operationId: listBookings
+      tags:
+      - Bookings
+      summary: List bookings
+      description: Returns a paginated list of bookings. Supports filtering by property, date range, and change time.
+      parameters:
+      - $ref: '#/components/parameters/PropertyIds'
+      - name: since_utc
+        in: query
+        description: Return bookings created or updated at or after this UTC timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: from
+        in: query
+        description: Start of the arrival-date filter window (YYYY-MM-DD).
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        description: End of the arrival-date filter window (YYYY-MM-DD).
+        schema:
+          type: string
+          format: date
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          $ref: '#/components/responses/BookingList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    post:
+      operationId: createBooking
+      tags:
+      - Bookings
+      summary: Create a booking
+      description: Creates a new booking.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/Booking'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /bookings/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getBooking
+      tags:
+      - Bookings
+      summary: Retrieve a booking
+      description: Retrieves a single booking by its identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/Booking'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateBooking
+      tags:
+      - Bookings
+      summary: Update a booking
+      description: Partially updates an existing booking.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/Booking'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type: string
+          nullable: true
+    BookingInput:
+      type: object
+      required:
+      - property_id
+      - arrival
+      - departure
+      properties:
+        property_id:
+          type: integer
+        guest_id:
+          type: integer
+        arrival:
+          type: string
+          format: date
+        departure:
+          type: string
+          format: date
+        adults:
+          type: integer
+        children:
+          type: integer
+        notes:
+          type: string
+    BookingPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Booking'
+    Booking:
+      allOf:
+      - $ref: '#/components/schemas/BookingInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          status:
+            type: string
+          total_amount:
+            type: number
+          balance_due:
+            type: number
+          is_block:
+            type: boolean
+          created_utc:
+            type: string
+            format: date-time
+          updated_utc:
+            type: string
+            format: date-time
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+  responses:
+    RateLimited:
+      description: Rate limit exceeded. The API allows 300 requests per 5 minutes per IP; exceeding it returns HTTP 429 with a JSON error body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BookingList:
+      description: A page of bookings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Booking:
+      description: A booking.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Booking'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token as the username; the password is left blank.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth app in the OwnerRez Developer/API settings, send the user to the authorization URL, then exchange the returned code for an access token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.ownerrez.com/oauth/authorize
+          tokenUrl: https://api.ownerrez.com/oauth/access_token
+          scopes: {}

@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: OwnerRez API v2 Bookings WebhookSubscriptions API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  version: '2.0'
+  contact:
+    name: OwnerRez
+    url: https://www.ownerrez.com
+  termsOfService: https://www.ownerrez.com/legal/terms
+servers:
+- url: https://api.ownerrez.com/v2
+  description: OwnerRez API v2 (production)
+security:
+- basicAuth: []
+- oauth2: []
+tags:
+- name: WebhookSubscriptions
+  description: Outbound webhook subscriptions and their event categories.
+paths:
+  /webhooksubscriptions:
+    get:
+      operationId: listWebhookSubscriptions
+      tags:
+      - WebhookSubscriptions
+      summary: List webhook subscriptions
+      description: Returns the outbound webhook subscriptions for the app.
+      responses:
+        '200':
+          $ref: '#/components/responses/WebhookSubscriptionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createWebhookSubscription
+      tags:
+      - WebhookSubscriptions
+      summary: Create a webhook subscription
+      description: Creates an outbound webhook subscription that POSTs event notifications to the supplied URL for the selected categories.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscriptionInput'
+      responses:
+        '200':
+          $ref: '#/components/responses/WebhookSubscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /webhooksubscriptions/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getWebhookSubscription
+      tags:
+      - WebhookSubscriptions
+      summary: Retrieve a webhook subscription
+      description: Retrieves a single webhook subscription by identifier.
+      responses:
+        '200':
+          $ref: '#/components/responses/WebhookSubscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteWebhookSubscription
+      tags:
+      - WebhookSubscriptions
+      summary: Delete a webhook subscription
+      description: Deletes an outbound webhook subscription.
+      responses:
+        '200':
+          $ref: '#/components/responses/Deleted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /webhooksubscriptions/categories:
+    get:
+      operationId: listWebhookCategories
+      tags:
+      - WebhookSubscriptions
+      summary: List webhook categories
+      description: Returns the available webhook event categories to subscribe to.
+      responses:
+        '200':
+          description: The available webhook event categories.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type: string
+          nullable: true
+    WebhookSubscription:
+      allOf:
+      - $ref: '#/components/schemas/WebhookSubscriptionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          active:
+            type: boolean
+          created_utc:
+            type: string
+            format: date-time
+    WebhookSubscriptionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    WebhookSubscriptionInput:
+      type: object
+      required:
+      - url
+      - categories
+      properties:
+        url:
+          type: string
+          format: uri
+        categories:
+          type: array
+          items:
+            type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    WebhookSubscription:
+      description: A webhook subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscription'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    WebhookSubscriptionList:
+      description: A list of webhook subscriptions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscriptionPage'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Supply your OwnerRez API key / Personal Access Token as the username; the password is left blank.
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Authorization Code Grant (RFC 6749 Section 4.1). Register an OAuth app in the OwnerRez Developer/API settings, send the user to the authorization URL, then exchange the returned code for an access token.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.ownerrez.com/oauth/authorize
+          tokenUrl: https://api.ownerrez.com/oauth/access_token
+          scopes: {}
