@@ -12,7 +12,20 @@ description: OwnerRez is vacation-rental and short-term-rental property manageme
   authenticated with an OAuth 2.0 access token (Authorization Code Grant) or with
   an API key / Personal Access Token via HTTP Basic auth, and server-to-app events
   are delivered through outbound webhooks.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: true
+  try_now: true
+  public: false
+  label: Freemium (free trial) · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/ownerrez.png
 tags:
 - Vacation Rental
 - Short-Term Rental
@@ -26,192 +39,372 @@ specificationVersion: '0.19'
 apis:
 - aid: ownerrez:ownerrez-bookings-api
   name: OwnerRez Bookings API
+  description: Reservations against a property, including dates, guest, and charges.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
   tags:
   - Bookings
-  - Reservations
-  - Availability
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-bookings-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-deposits-api
+  name: OwnerRez Deposits API
+  description: Security and damage deposits.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://www.ownerrez.com/support/articles/api-overview
-    type: Documentation
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: List, retrieve, create, and update bookings - reservations against a
-    property with arrival/departure dates, guest, occupancy, status, and charge
-    totals. Filter by property, arrival window, and change time.
-- aid: ownerrez:ownerrez-properties-api
-  name: OwnerRez Properties API
   tags:
-  - Properties
-  - Availability
-  - Search
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  - Deposits
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-deposits-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-discounts-api
+  name: OwnerRez Discounts API
+  description: Discount rules.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Read the rental properties managed in OwnerRez and search them by
-    availability window and occupancy criteria via the PropertySearch endpoint.
-- aid: ownerrez:ownerrez-listings-api
-  name: OwnerRez Listings API
   tags:
-  - Listings
-  - Listing Sites
-  - Channels
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  - Discounts
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-discounts-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-fees-api
+  name: OwnerRez Fees API
+  description: Fees applied to bookings and quotes.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Fees
   properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Read public listing content (titles, headlines, descriptions) for
-    properties and the channel listing sites - such as Airbnb and Vrbo - that
-    properties are published to.
+  - type: OpenAPI
+    url: openapi/ownerrez-fees-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-fielddefinitions-api
+  name: OwnerRez FieldDefinitions API
+  description: Definitions of custom fields.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - FieldDefinitions
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-fielddefinitions-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-fields-api
+  name: OwnerRez Fields API
+  description: Custom field values attached to records.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Fields
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-fields-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
 - aid: ownerrez:ownerrez-guests-api
   name: OwnerRez Guests API
+  description: Guest contact records and their addresses, emails, and phones.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
   tags:
   - Guests
-  - CRM
-  - Contacts
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api.ownerrez.com/help/v2
-  baseURL: https://api.ownerrez.com/v2
   properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Manage guest contact records - list, retrieve, create, update, and
-    delete guests, and remove individual addresses, email addresses, and phone
-    numbers from a guest.
+  - type: OpenAPI
+    url: openapi/ownerrez-guests-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
 - aid: ownerrez:ownerrez-inquiries-api
   name: OwnerRez Inquiries API
+  description: Inbound guest inquiries and leads.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
   tags:
   - Inquiries
-  - Leads
-  - Bookings
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-inquiries-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-listings-api
+  name: OwnerRez Listings API
+  description: Public listing content and channel listing sites for properties.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Read inbound guest inquiries and leads, filtered by property and
-    received time, to feed a lead-management or booking workflow.
-- aid: ownerrez:ownerrez-quotes-api
-  name: OwnerRez Quotes API
   tags:
-  - Quotes
-  - Pricing
-  - Fees
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api.ownerrez.com/help/v2
-  baseURL: https://api.ownerrez.com/v2
+  - Listings
   properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Create, read, update, and delete price quotes for a property and
-    date range, and manage the pricing building blocks that drive them - discounts,
-    fees, surcharges, and ad hoc nightly spot rates.
-- aid: ownerrez:ownerrez-reviews-api
-  name: OwnerRez Reviews API
-  tags:
-  - Reviews
-  - Ratings
-  - Reputation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api.ownerrez.com/help/v2
-  baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Read guest reviews collected for stays and properties, including
-    rating, title, body, and reviewer, for reputation and display use cases.
+  - type: OpenAPI
+    url: openapi/ownerrez-listings-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
 - aid: ownerrez:ownerrez-messages-api
   name: OwnerRez Messages API
+  description: Guest messaging threads and outbound messages.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
   tags:
   - Messages
-  - Guest Messaging
-  - Communication
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-messages-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-owners-api
+  name: OwnerRez Owners API
+  description: Property owners.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Read guest message threads and send outbound messages tied to a
-    booking, for automated and manual guest communication.
-- aid: ownerrez:ownerrez-custom-fields-api
-  name: OwnerRez Custom Fields and Tags API
   tags:
-  - Custom Fields
-  - Tags
-  - Metadata
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  - Owners
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-owners-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-payments-api
+  name: OwnerRez Payments API
+  description: Payments recorded against bookings.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Define and apply custom metadata across records - field definitions
-    and their values (Fields/FieldDefinitions) plus tag definitions and their
-    applied tags (Tags/TagDefinitions), including delete-by-definition and
-    delete-by-name helpers.
-- aid: ownerrez:ownerrez-financials-api
-  name: OwnerRez Payments and Financials API
   tags:
   - Payments
-  - Deposits
-  - Refunds
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-payments-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-properties-api
+  name: OwnerRez Properties API
+  description: Rental properties managed in OwnerRez.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
-  properties:
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Read the financial records attached to bookings - payments, security
-    and damage deposits, and refunds - plus the owners those properties belong to
-    and the authenticated user context.
-- aid: ownerrez:ownerrez-webhooks-api
-  name: OwnerRez Webhook Subscriptions API
   tags:
-  - Webhooks
-  - Events
-  - Integration
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://www.ownerrez.com/support/articles/api-webhooks
-  baseURL: https://api.ownerrez.com/v2
+  - Properties
   properties:
-  - url: https://www.ownerrez.com/support/articles/api-webhooks
-    type: Documentation
-  - url: https://api.ownerrez.com/help/v2
-    type: APIReference
-  - url: openapi/ownerrez-openapi.yml
-    type: OpenAPI
-  description: Create, list, retrieve, and delete outbound webhook subscriptions
-    and enumerate the available event categories. OwnerRez POSTs event
-    notifications to your subscribed URL; there is no public WebSocket API.
+  - type: OpenAPI
+    url: openapi/ownerrez-properties-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-propertysearch-api
+  name: OwnerRez PropertySearch API
+  description: Availability and criteria search across properties.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - PropertySearch
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-propertysearch-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-quotes-api
+  name: OwnerRez Quotes API
+  description: Price quotes generated for a stay.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-quotes-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-refunds-api
+  name: OwnerRez Refunds API
+  description: Refunds issued against payments.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Refunds
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-refunds-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-reviews-api
+  name: OwnerRez Reviews API
+  description: Guest reviews collected for stays and properties.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Reviews
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-reviews-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-spotrates-api
+  name: OwnerRez SpotRates API
+  description: Ad hoc nightly spot-rate overrides.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - SpotRates
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-spotrates-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-surcharges-api
+  name: OwnerRez Surcharges API
+  description: Surcharge rules applied to bookings and quotes.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Surcharges
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-surcharges-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-tagdefinitions-api
+  name: OwnerRez TagDefinitions API
+  description: Definitions of tags.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - TagDefinitions
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-tagdefinitions-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-tags-api
+  name: OwnerRez Tags API
+  description: Tag values applied to records.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-tags-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-users-api
+  name: OwnerRez Users API
+  description: The authenticated user context.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-users-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-webhooksubscriptions-api
+  name: OwnerRez WebhookSubscriptions API
+  description: Outbound webhook subscriptions and their event categories.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - WebhookSubscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-webhooksubscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
 common:
 - type: AgenticAccess
   url: agentic-access/ownerrez-agentic-access.yml
