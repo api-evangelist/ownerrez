@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OwnerRez API v2 Bookings SpotRates API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SpotRates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update spot rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ownerrez.com/v2/spotrates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies ad hoc nightly spot-rate overrides for a property across a date range."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

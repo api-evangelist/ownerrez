@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OwnerRez API v2 Bookings WebhookSubscriptions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "WebhookSubscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List webhook subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/webhooksubscriptions"
+          },
+          "docs": "Returns the outbound webhook subscriptions for the app."
+        },
+        {
+          "info": {
+            "name": "Create a webhook subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ownerrez.com/v2/webhooksubscriptions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an outbound webhook subscription that POSTs event notifications to the supplied URL for the selected categories."
+        },
+        {
+          "info": {
+            "name": "Retrieve a webhook subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/webhooksubscriptions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves a single webhook subscription by identifier."
+        },
+        {
+          "info": {
+            "name": "Delete a webhook subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/webhooksubscriptions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Deletes an outbound webhook subscription."
+        },
+        {
+          "info": {
+            "name": "List webhook categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/webhooksubscriptions/categories"
+          },
+          "docs": "Returns the available webhook event categories to subscribe to."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

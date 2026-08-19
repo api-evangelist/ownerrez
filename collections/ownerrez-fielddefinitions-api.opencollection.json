@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OwnerRez API v2 Bookings FieldDefinitions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "FieldDefinitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List field definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/fielddefinitions",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to skip for pagination."
+              }
+            ]
+          },
+          "docs": "Returns the custom field definitions."
+        },
+        {
+          "info": {
+            "name": "Create a field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ownerrez.com/v2/fielddefinitions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new custom field definition."
+        },
+        {
+          "info": {
+            "name": "Retrieve a field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/fielddefinitions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves a single field definition by identifier."
+        },
+        {
+          "info": {
+            "name": "Update a field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ownerrez.com/v2/fielddefinitions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a custom field definition."
+        },
+        {
+          "info": {
+            "name": "Delete a field definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/fielddefinitions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Deletes a custom field definition."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

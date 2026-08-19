@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OwnerRez API v2 Bookings Surcharges API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Surcharges",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List surcharges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/surcharges",
+            "params": [
+              {
+                "name": "property_ids",
+                "value": "",
+                "type": "query",
+                "description": "One or more property identifiers to filter by."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to skip for pagination."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of surcharge rules."
+        },
+        {
+          "info": {
+            "name": "Create a surcharge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ownerrez.com/v2/surcharges",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new surcharge rule."
+        },
+        {
+          "info": {
+            "name": "Retrieve a surcharge",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/surcharges/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves a single surcharge by identifier."
+        },
+        {
+          "info": {
+            "name": "Update a surcharge",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ownerrez.com/v2/surcharges/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a surcharge rule."
+        },
+        {
+          "info": {
+            "name": "Delete a surcharge",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/surcharges/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Deletes a surcharge rule."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

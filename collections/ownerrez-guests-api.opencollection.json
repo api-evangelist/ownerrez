@@ -1,0 +1,209 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OwnerRez API v2 Bookings Guests API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Guests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List guests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/guests",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Free-text search across guest name and contact details."
+              },
+              {
+                "name": "created_since_utc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to skip for pagination."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of guest contact records."
+        },
+        {
+          "info": {
+            "name": "Create a guest",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ownerrez.com/v2/guests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new guest contact record."
+        },
+        {
+          "info": {
+            "name": "Retrieve a guest",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ownerrez.com/v2/guests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves a single guest by identifier."
+        },
+        {
+          "info": {
+            "name": "Update a guest",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ownerrez.com/v2/guests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially updates a guest record."
+        },
+        {
+          "info": {
+            "name": "Delete a guest",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/guests/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Deletes a guest record."
+        },
+        {
+          "info": {
+            "name": "Delete a guest address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/guests/:id/addresses/:address_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              },
+              {
+                "name": "address_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes an address from a guest record."
+        },
+        {
+          "info": {
+            "name": "Delete a guest email address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/guests/:id/emailaddresses/:email_address_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              },
+              {
+                "name": "email_address_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes an email address from a guest record."
+        },
+        {
+          "info": {
+            "name": "Delete a guest phone",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ownerrez.com/v2/guests/:id/phones/:phone_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              },
+              {
+                "name": "phone_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a phone number from a guest record."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
