@@ -107,6 +107,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - Field Definitions
+  tags_raw:
   - FieldDefinitions
   properties:
   - type: OpenAPI
@@ -187,6 +189,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -251,6 +255,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - Property Search
+  tags_raw:
   - PropertySearch
   properties:
   - type: OpenAPI
@@ -315,6 +321,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - Spot Rates
+  tags_raw:
   - SpotRates
   properties:
   - type: OpenAPI
@@ -379,6 +387,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -395,6 +405,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - Webhook Subscriptions
+  tags_raw:
   - WebhookSubscriptions
   properties:
   - type: OpenAPI
