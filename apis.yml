@@ -430,6 +430,9 @@ apis:
   - type: Documentation
     url: https://www.ownerrez.com/support/articles/api-webhooks
 common:
+- type: CapabilityMap
+  url: capabilities/ownerrez-capability-edges.yml
+  name: OwnerRez Business Capability Map
 - type: AgenticAccess
   url: agentic-access/ownerrez-agentic-access.yml
 - type: DomainSecurity
