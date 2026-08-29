@@ -12,6 +12,18 @@ description: OwnerRez is vacation-rental and short-term-rental property manageme
   authenticated with an OAuth 2.0 access token (Authorization Code Grant) or with
   an API key / Personal Access Token via HTTP Basic auth, and server-to-app events
   are delivered through outbound webhooks.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
