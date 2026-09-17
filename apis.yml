@@ -113,24 +113,6 @@ apis:
     url: https://api.ownerrez.com/help/v2
   - type: Documentation
     url: https://www.ownerrez.com/support/articles/api-webhooks
-- aid: ownerrez:ownerrez-fielddefinitions-api
-  name: OwnerRez FieldDefinitions API
-  description: Definitions of custom fields.
-  humanURL: https://api.ownerrez.com/help/v2
-  baseURL: https://api.ownerrez.com/v2
-  tags:
-  - Field Definitions
-  tags_raw:
-  - FieldDefinitions
-  properties:
-  - type: OpenAPI
-    url: openapi/ownerrez-fielddefinitions-api-openapi.yml
-  - type: Documentation
-    url: https://www.ownerrez.com/support/articles/api-overview
-  - type: APIReference
-    url: https://api.ownerrez.com/help/v2
-  - type: Documentation
-    url: https://www.ownerrez.com/support/articles/api-webhooks
 - aid: ownerrez:ownerrez-fields-api
   name: OwnerRez Fields API
   description: Custom field values attached to records.
@@ -255,24 +237,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/ownerrez-properties-api-openapi.yml
-  - type: Documentation
-    url: https://www.ownerrez.com/support/articles/api-overview
-  - type: APIReference
-    url: https://api.ownerrez.com/help/v2
-  - type: Documentation
-    url: https://www.ownerrez.com/support/articles/api-webhooks
-- aid: ownerrez:ownerrez-propertysearch-api
-  name: OwnerRez PropertySearch API
-  description: Availability and criteria search across properties.
-  humanURL: https://api.ownerrez.com/help/v2
-  baseURL: https://api.ownerrez.com/v2
-  tags:
-  - Property Search
-  tags_raw:
-  - PropertySearch
-  properties:
-  - type: OpenAPI
-    url: openapi/ownerrez-propertysearch-api-openapi.yml
   - type: Documentation
     url: https://www.ownerrez.com/support/articles/api-overview
   - type: APIReference
@@ -411,18 +375,48 @@ apis:
     url: https://api.ownerrez.com/help/v2
   - type: Documentation
     url: https://www.ownerrez.com/support/articles/api-webhooks
-- aid: ownerrez:ownerrez-webhooksubscriptions-api
-  name: OwnerRez WebhookSubscriptions API
+- aid: ownerrez:ownerrez-field-definitions-api
+  name: OwnerRez Field Definitions API
+  description: Definitions of custom fields.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Field Definitions
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-field-definitions-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-property-search-api
+  name: OwnerRez Property Search API
+  description: Availability and criteria search across properties.
+  humanURL: https://api.ownerrez.com/help/v2
+  baseURL: https://api.ownerrez.com/v2
+  tags:
+  - Property Search
+  properties:
+  - type: OpenAPI
+    url: openapi/ownerrez-property-search-api-openapi.yml
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-overview
+  - type: APIReference
+    url: https://api.ownerrez.com/help/v2
+  - type: Documentation
+    url: https://www.ownerrez.com/support/articles/api-webhooks
+- aid: ownerrez:ownerrez-webhook-subscriptions-api
+  name: OwnerRez Webhook Subscriptions API
   description: Outbound webhook subscriptions and their event categories.
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
   - Webhook Subscriptions
-  tags_raw:
-  - WebhookSubscriptions
   properties:
   - type: OpenAPI
-    url: openapi/ownerrez-webhooksubscriptions-api-openapi.yml
+    url: openapi/ownerrez-webhook-subscriptions-api-openapi.yml
   - type: Documentation
     url: https://www.ownerrez.com/support/articles/api-overview
   - type: APIReference
