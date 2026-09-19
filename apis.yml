@@ -39,6 +39,13 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/ownerrez.png
 tags:
+- Vacation Rentals
+- Short-Term Rental
+- Property Management
+- Hospitality
+- Booking
+- Channel Manager
+tags_raw:
 - Vacation Rental
 - Short-Term Rental
 - Property Management
@@ -55,6 +62,8 @@ apis:
   humanURL: https://api.ownerrez.com/help/v2
   baseURL: https://api.ownerrez.com/v2
   tags:
+  - Booking
+  tags_raw:
   - Bookings
   properties:
   - type: OpenAPI
