@@ -1,29 +1,7 @@
 {
   "provider": "ownerrez",
   "sources": [
-    "ownerrez-bookings-api-openapi.yml",
-    "ownerrez-deposits-api-openapi.yml",
-    "ownerrez-discounts-api-openapi.yml",
-    "ownerrez-fees-api-openapi.yml",
-    "ownerrez-fielddefinitions-api-openapi.yml",
-    "ownerrez-fields-api-openapi.yml",
-    "ownerrez-guests-api-openapi.yml",
-    "ownerrez-inquiries-api-openapi.yml",
-    "ownerrez-listings-api-openapi.yml",
-    "ownerrez-messages-api-openapi.yml",
-    "ownerrez-owners-api-openapi.yml",
-    "ownerrez-payments-api-openapi.yml",
-    "ownerrez-properties-api-openapi.yml",
-    "ownerrez-propertysearch-api-openapi.yml",
-    "ownerrez-quotes-api-openapi.yml",
-    "ownerrez-refunds-api-openapi.yml",
-    "ownerrez-reviews-api-openapi.yml",
-    "ownerrez-spotrates-api-openapi.yml",
-    "ownerrez-surcharges-api-openapi.yml",
-    "ownerrez-tagdefinitions-api-openapi.yml",
-    "ownerrez-tags-api-openapi.yml",
-    "ownerrez-users-api-openapi.yml",
-    "ownerrez-webhooksubscriptions-api-openapi.yml"
+    "_original/ownerrez-openapi.yml"
   ],
   "outputs": [
     "ownerrez-bookings-api-openapi.yml",
@@ -50,9 +28,40 @@
     "ownerrez-users-api-openapi.yml",
     "ownerrez-webhooksubscriptions-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 3 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "ownerrez-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "superseded outputs removed: ownerrez-field-definitions-api-openapi.yml, ownerrez-property-search-api-openapi.yml, ownerrez-webhook-subscriptions-api-openapi.yml",
+    "apis.yml register: written (+3 apis, 23 total)"
+  ],
+  "skipped": [
+    "ownerrez-bookings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-deposits-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-discounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-fees-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-field-definitions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-fields-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-guests-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-inquiries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-listings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-messages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-owners-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-properties-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-property-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-quotes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-refunds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-reviews-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-spotrates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-surcharges-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-tagdefinitions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ownerrez-webhook-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

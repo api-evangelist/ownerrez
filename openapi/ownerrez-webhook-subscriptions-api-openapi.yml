@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: OwnerRez API v2 Bookings WebhookSubscriptions API
-  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  title: OwnerRez API v2 Webhook Subscriptions API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform.
   version: '2.0'
   contact:
     name: OwnerRez
@@ -14,14 +14,14 @@ security:
 - basicAuth: []
 - oauth2: []
 tags:
-- name: WebhookSubscriptions
+- name: Webhook Subscriptions
   description: Outbound webhook subscriptions and their event categories.
 paths:
   /webhooksubscriptions:
     get:
       operationId: listWebhookSubscriptions
       tags:
-      - WebhookSubscriptions
+      - Webhook Subscriptions
       summary: List webhook subscriptions
       description: Returns the outbound webhook subscriptions for the app.
       responses:
@@ -32,7 +32,7 @@ paths:
     post:
       operationId: createWebhookSubscription
       tags:
-      - WebhookSubscriptions
+      - Webhook Subscriptions
       summary: Create a webhook subscription
       description: Creates an outbound webhook subscription that POSTs event notifications to the supplied URL for the selected categories.
       requestBody:
@@ -54,7 +54,7 @@ paths:
     get:
       operationId: getWebhookSubscription
       tags:
-      - WebhookSubscriptions
+      - Webhook Subscriptions
       summary: Retrieve a webhook subscription
       description: Retrieves a single webhook subscription by identifier.
       responses:
@@ -67,7 +67,7 @@ paths:
     delete:
       operationId: deleteWebhookSubscription
       tags:
-      - WebhookSubscriptions
+      - Webhook Subscriptions
       summary: Delete a webhook subscription
       description: Deletes an outbound webhook subscription.
       responses:
@@ -81,7 +81,7 @@ paths:
     get:
       operationId: listWebhookCategories
       tags:
-      - WebhookSubscriptions
+      - Webhook Subscriptions
       summary: List webhook categories
       description: Returns the available webhook event categories to subscribe to.
       responses:
@@ -99,20 +99,64 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    WebhookSubscriptionList:
+      description: A list of webhook subscriptions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscriptionPage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    WebhookSubscription:
+      description: A webhook subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscription'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Page:
+    Error:
       type: object
-      description: Common pagination envelope returned by list endpoints.
       properties:
-        count:
+        statusCode:
           type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
+        error:
           type: string
-          nullable: true
+        messages:
+          type: array
+          items:
+            type: string
+    WebhookSubscriptionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
     WebhookSubscription:
       allOf:
       - $ref: '#/components/schemas/WebhookSubscriptionInput'
@@ -125,26 +169,20 @@ components:
           created_utc:
             type: string
             format: date-time
-    WebhookSubscriptionPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookSubscription'
-    Error:
+    Page:
       type: object
+      description: Common pagination envelope returned by list endpoints.
       properties:
-        statusCode:
+        count:
           type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
     WebhookSubscriptionInput:
       type: object
       required:
@@ -173,43 +211,6 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: integer
-  responses:
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    WebhookSubscription:
-      description: A webhook subscription.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscription'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    WebhookSubscriptionList:
-      description: A list of webhook subscriptions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscriptionPage'
   securitySchemes:
     basicAuth:
       type: http

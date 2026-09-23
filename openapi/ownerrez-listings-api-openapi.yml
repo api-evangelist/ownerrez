@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: OwnerRez API v2 Bookings Listings API
-  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  title: OwnerRez API v2 Listings API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform.
   version: '2.0'
   contact:
     name: OwnerRez
@@ -78,20 +78,55 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ListingSite:
+      description: A listing site.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingSite'
+    ListingSiteList:
+      description: A page of listing sites.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingSitePage'
+    Listing:
+      description: A listing.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Listing'
+    ListingList:
+      description: A page of listings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Page:
+    Error:
       type: object
-      description: Common pagination envelope returned by list endpoints.
       properties:
-        count:
+        statusCode:
           type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
+        error:
           type: string
-          nullable: true
+        messages:
+          type: array
+          items:
+            type: string
     ListingPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -101,6 +136,19 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Listing'
+    Listing:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        headline:
+          type: string
     ListingSite:
       type: object
       properties:
@@ -119,67 +167,20 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/ListingSite'
-    Error:
+    Page:
       type: object
+      description: Common pagination envelope returned by list endpoints.
       properties:
-        statusCode:
+        count:
           type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    Listing:
-      type: object
-      properties:
-        id:
+        limit:
           type: integer
-        property_id:
+        offset:
           type: integer
-        title:
-          type: string
-        description:
-          type: string
-        headline:
-          type: string
-  responses:
-    ListingSiteList:
-      description: A page of listing sites.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListingSitePage'
-    Listing:
-      description: A listing.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Listing'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ListingList:
-      description: A page of listings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListingPage'
-    ListingSite:
-      description: A listing site.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListingSite'
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
   parameters:
     Id:
       name: id
@@ -188,13 +189,6 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
     PropertyIds:
       name: property_ids
       in: query
@@ -205,6 +199,13 @@ components:
         type: array
         items:
           type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
     Limit:
       name: limit
       in: query

@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: OwnerRez API v2 Bookings Surcharges API
-  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  title: OwnerRez API v2 Surcharges API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform.
   version: '2.0'
   contact:
     name: OwnerRez
@@ -104,30 +104,24 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    SurchargeList:
-      description: A page of surcharges.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SurchargePage'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    SurchargeList:
+      description: A page of surcharges.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SurchargePage'
     Surcharge:
       description: A surcharge.
       content:
@@ -140,50 +134,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type: string
-          nullable: true
-    Surcharge:
-      allOf:
-      - $ref: '#/components/schemas/SurchargeInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-    SurchargeInput:
-      type: object
-      required:
-      - property_id
-      - name
-      properties:
-        property_id:
-          type: integer
-        name:
-          type: string
-        amount:
-          type: number
-        is_percent:
-          type: boolean
-    SurchargePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Surcharge'
     Error:
       type: object
       properties:
@@ -202,7 +159,61 @@ components:
           type: integer
         success:
           type: boolean
+    SurchargePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Surcharge'
+    Surcharge:
+      allOf:
+      - $ref: '#/components/schemas/SurchargeInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    SurchargeInput:
+      type: object
+      required:
+      - property_id
+      - name
+      properties:
+        property_id:
+          type: integer
+        name:
+          type: string
+        amount:
+          type: number
+        is_percent:
+          type: boolean
   parameters:
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
     Id:
       name: id
       in: path
@@ -217,16 +228,6 @@ components:
       schema:
         type: integer
         default: 0
-    PropertyIds:
-      name: property_ids
-      in: query
-      description: One or more property identifiers to filter by.
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
-          type: integer
     Limit:
       name: limit
       in: query

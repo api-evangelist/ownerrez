@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: OwnerRez API v2 Bookings Properties API
-  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform. It exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messages, payments and financials, custom fields and tags, owners, and webhook subscriptions over HTTPS. All endpoints are served under https://api.ownerrez.com/v2. Requests are authenticated either with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic authentication. Every request should send a descriptive User-Agent. The endpoint paths and HTTP methods in this document are grounded in the published machine-readable operation index at https://api.ownerrez.com/help/v2/index.md; request and response schema properties are representative and should be verified against the interactive reference at https://api.ownerrez.com/help/v2. OwnerRez also delivers server-to-app events via outbound webhooks (managed through the WebhookSubscriptions resource); there is no public WebSocket API.
+  title: OwnerRez API v2 Properties API
+  description: The OwnerRez API v2 is a REST/JSON API for the OwnerRez vacation-rental and short-term-rental property management platform.
   version: '2.0'
   contact:
     name: OwnerRez
@@ -53,20 +53,32 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Property:
+      description: A property.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Property'
+    PropertyList:
+      description: A page of properties.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PropertyPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type: string
-          nullable: true
     Error:
       type: object
       properties:
@@ -105,31 +117,20 @@ components:
           type: number
         max_guests:
           type: integer
-  responses:
-    PropertyList:
-      description: A page of properties.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PropertyPage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Property:
-      description: A property.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Property'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
   parameters:
     Id:
       name: id
