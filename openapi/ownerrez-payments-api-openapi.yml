@@ -54,6 +54,12 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
@@ -72,24 +78,52 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Payment'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
-    Error:
+    Page:
       type: object
+      description: Common pagination envelope returned by list endpoints.
       properties:
-        statusCode:
+        count:
           type: integer
-        error:
-          type: string
-        messages:
-          type: array
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    PaymentPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
           items:
-            type: string
+            type: array
+            items:
+              $ref: '#/components/schemas/Payment'
     Payment:
       type: object
       properties:
@@ -106,51 +140,17 @@ components:
         received_utc:
           type: string
           format: date-time
-    PaymentPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Payment'
-    Page:
+    Error:
       type: object
-      description: Common pagination envelope returned by list endpoints.
       properties:
-        count:
+        statusCode:
           type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   securitySchemes:
     basicAuth:
       type: http

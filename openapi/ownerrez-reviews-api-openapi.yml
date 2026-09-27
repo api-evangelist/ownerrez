@@ -51,6 +51,12 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
@@ -69,68 +75,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ReviewPage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  schemas:
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    Review:
-      type: object
-      properties:
-        id:
-          type: integer
-        property_id:
-          type: integer
-        booking_id:
-          type: integer
-        rating:
-          type: number
-        title:
-          type: string
-        body:
-          type: string
-        reviewer_name:
-          type: string
-        created_utc:
-          type: string
-          format: date-time
-    ReviewPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Review'
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
   parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
     Id:
       name: id
       in: path
@@ -155,13 +107,61 @@ components:
       schema:
         type: integer
         default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+  schemas:
+    ReviewPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Review'
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        booking_id:
+          type: integer
+        rating:
+          type: number
+        title:
+          type: string
+        body:
+          type: string
+        reviewer_name:
+          type: string
+        created_utc:
+          type: string
+          format: date-time
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   securitySchemes:
     basicAuth:
       type: http

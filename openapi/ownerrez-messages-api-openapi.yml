@@ -78,8 +78,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -90,45 +90,47 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MessagePage'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Message:
       description: A message.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Message'
-    NotFound:
-      description: The requested resource was not found.
+    ValidationError:
+      description: The request payload failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
-    MessagePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Message'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -155,6 +157,15 @@ components:
           type: string
         is_automated:
           type: boolean
+    MessagePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Message'
     Message:
       allOf:
       - $ref: '#/components/schemas/MessageInput'
@@ -170,28 +181,17 @@ components:
           sent_utc:
             type: string
             format: date-time
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   securitySchemes:
     basicAuth:
       type: http

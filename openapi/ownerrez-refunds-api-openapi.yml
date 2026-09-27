@@ -54,12 +54,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -78,32 +72,35 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RefundPage'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
-    Refund:
-      type: object
-      properties:
-        id:
-          type: integer
-        payment_id:
-          type: integer
-        booking_id:
-          type: integer
-        amount:
-          type: number
-        issued_utc:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -127,28 +124,31 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Refund'
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    Refund:
+      type: object
+      properties:
+        id:
+          type: integer
+        payment_id:
+          type: integer
+        booking_id:
+          type: integer
+        amount:
+          type: number
+        issued_utc:
+          type: string
+          format: date-time
   securitySchemes:
     basicAuth:
       type: http

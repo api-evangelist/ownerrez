@@ -101,6 +101,18 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
@@ -119,52 +131,35 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/FieldDefinitionPage'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     FieldDefinition:
       description: A field definition.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/FieldDefinition'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    FieldDefinition:
-      allOf:
-      - $ref: '#/components/schemas/FieldDefinitionInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-    FieldDefinitionPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/FieldDefinition'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -186,6 +181,17 @@ components:
           type: integer
         success:
           type: boolean
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
     FieldDefinitionInput:
       type: object
       required:
@@ -202,28 +208,22 @@ components:
           type: array
           items:
             type: string
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+    FieldDefinition:
+      allOf:
+      - $ref: '#/components/schemas/FieldDefinitionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+    FieldDefinitionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldDefinition'
   securitySchemes:
     basicAuth:
       type: http

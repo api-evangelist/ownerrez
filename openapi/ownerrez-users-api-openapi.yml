@@ -30,6 +30,29 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        account_id:
+          type: integer
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   responses:
     Unauthorized:
       description: Missing or invalid credentials.
@@ -43,29 +66,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
-  schemas:
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-        email:
-          type: string
-        name:
-          type: string
-        account_id:
-          type: integer
   securitySchemes:
     basicAuth:
       type: http

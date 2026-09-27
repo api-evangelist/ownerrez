@@ -176,30 +176,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    GuestList:
-      description: A page of guests.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GuestPage'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -212,7 +188,76 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Guest'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    GuestList:
+      description: A page of guests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GuestPage'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    GuestPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Guest'
     Error:
       type: object
       properties:
@@ -224,15 +269,13 @@ components:
           type: array
           items:
             type: string
-    GuestPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Guest'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     GuestInput:
       type: object
       properties:
@@ -267,49 +310,6 @@ components:
           created_utc:
             type: string
             format: date-time
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
   securitySchemes:
     basicAuth:
       type: http

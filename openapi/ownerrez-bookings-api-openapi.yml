@@ -113,30 +113,6 @@ paths:
           $ref: '#/components/responses/ValidationError'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Booking:
-      description: A booking.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Booking'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Rate limit exceeded. The API allows 300 requests per 5 minutes per IP; exceeding it returns HTTP 429 with a JSON error body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -149,50 +125,63 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/BookingPage'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Booking:
+      description: A booking.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Booking'
+    RateLimited:
+      description: Rate limit exceeded. The API allows 300 requests per 5 minutes per IP; exceeding it returns HTTP 429 with a JSON error body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    BookingInput:
-      type: object
-      required:
-      - property_id
-      - arrival
-      - departure
-      properties:
-        property_id:
-          type: integer
-        guest_id:
-          type: integer
-        arrival:
-          type: string
-          format: date
-        departure:
-          type: string
-          format: date
-        adults:
-          type: integer
-        children:
-          type: integer
-        notes:
-          type: string
-    BookingPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Booking'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -228,38 +217,49 @@ components:
           updated_utc:
             type: string
             format: date-time
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    PropertyIds:
-      name: property_ids
-      in: query
-      description: One or more property identifiers to filter by.
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
+    BookingPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Booking'
+    BookingInput:
+      type: object
+      required:
+      - property_id
+      - arrival
+      - departure
+      properties:
+        property_id:
           type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+        guest_id:
+          type: integer
+        arrival:
+          type: string
+          format: date
+        departure:
+          type: string
+          format: date
+        adults:
+          type: integer
+        children:
+          type: integer
+        notes:
+          type: string
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   securitySchemes:
     basicAuth:
       type: http

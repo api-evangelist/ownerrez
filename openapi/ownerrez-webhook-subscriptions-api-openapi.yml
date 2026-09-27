@@ -100,24 +100,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    WebhookSubscriptionList:
-      description: A list of webhook subscriptions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscriptionPage'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
     WebhookSubscription:
       description: A webhook subscription.
       content:
@@ -130,45 +118,33 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
+    Unauthorized:
+      description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    WebhookSubscriptionList:
+      description: A list of webhook subscriptions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscriptionPage'
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
   schemas:
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    WebhookSubscriptionPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookSubscription'
-    WebhookSubscription:
-      allOf:
-      - $ref: '#/components/schemas/WebhookSubscriptionInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          active:
-            type: boolean
-          created_utc:
-            type: string
-            format: date-time
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -196,6 +172,17 @@ components:
           type: array
           items:
             type: string
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
     DeleteResponse:
       type: object
       properties:
@@ -203,14 +190,27 @@ components:
           type: integer
         success:
           type: boolean
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
+    WebhookSubscriptionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
+    WebhookSubscription:
+      allOf:
+      - $ref: '#/components/schemas/WebhookSubscriptionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          active:
+            type: boolean
+          created_utc:
+            type: string
+            format: date-time
   securitySchemes:
     basicAuth:
       type: http

@@ -51,18 +51,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Fee:
-      description: A fee.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Fee'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -75,57 +63,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/FeePage'
-  schemas:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Fee:
-      type: object
-      properties:
-        id:
-          type: integer
-        property_id:
-          type: integer
-        name:
-          type: string
-        amount:
-          type: number
-        is_percent:
-          type: boolean
-        taxable:
-          type: boolean
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    FeePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Fee'
+      description: A fee.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Fee'
   parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
     Id:
       name: id
       in: path
@@ -150,13 +107,56 @@ components:
       schema:
         type: integer
         default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+  schemas:
+    FeePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Fee'
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    Fee:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        name:
+          type: string
+        amount:
+          type: number
+        is_percent:
+          type: boolean
+        taxable:
+          type: boolean
   securitySchemes:
     basicAuth:
       type: http

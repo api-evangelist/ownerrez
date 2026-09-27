@@ -104,26 +104,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Tag:
-      description: A tag value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Tag'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    ValidationError:
-      description: The request payload failed validation.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -134,76 +116,38 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TagPage'
-    NotFound:
-      description: The requested resource was not found.
+    Tag:
+      description: A tag value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Tag'
+    ValidationError:
+      description: The request payload failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  schemas:
-    Tag:
-      allOf:
-      - $ref: '#/components/schemas/TagInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          name:
-            type: string
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    TagPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Tag'
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    TagInput:
-      type: object
-      required:
-      - tag_definition_id
-      - entity_id
-      properties:
-        tag_definition_id:
-          type: integer
-        entity_id:
-          type: integer
-        entity_type:
-          type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
   parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
     Id:
       name: id
       in: path
@@ -218,13 +162,69 @@ components:
       schema:
         type: integer
         default: 0
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    TagInput:
+      type: object
+      required:
+      - tag_definition_id
+      - entity_id
+      properties:
+        tag_definition_id:
+          type: integer
+        entity_id:
+          type: integer
+        entity_type:
+          type: string
+    Tag:
+      allOf:
+      - $ref: '#/components/schemas/TagInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    TagPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Tag'
   securitySchemes:
     basicAuth:
       type: http
