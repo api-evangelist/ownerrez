@@ -100,66 +100,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    TagDefinition:
-      description: A tag definition.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TagDefinition'
-    TagDefinitionList:
-      description: A page of tag definitions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TagDefinitionPage'
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
+    TagDefinition:
+      allOf:
+      - $ref: '#/components/schemas/TagDefinitionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -174,6 +122,15 @@ components:
           type:
           - string
           - 'null'
+    TagDefinitionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/TagDefinition'
     Error:
       type: object
       properties:
@@ -185,15 +142,6 @@ components:
           type: array
           items:
             type: string
-    TagDefinitionPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/TagDefinition'
     TagDefinitionInput:
       type: object
       required:
@@ -212,13 +160,65 @@ components:
           type: integer
         success:
           type: boolean
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    TagDefinitionList:
+      description: A page of tag definitions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TagDefinitionPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     TagDefinition:
-      allOf:
-      - $ref: '#/components/schemas/TagDefinitionInput'
-      - type: object
-        properties:
-          id:
-            type: integer
+      description: A tag definition.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TagDefinition'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

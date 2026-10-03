@@ -103,75 +103,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    QuoteList:
-      description: A page of quotes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/QuotePage'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Quote:
-      description: A quote.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Quote'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    PropertyIds:
-      name: property_ids
-      in: query
-      description: One or more property identifiers to filter by.
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
-          type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
     Page:
       type: object
@@ -187,6 +118,22 @@ components:
           type:
           - string
           - 'null'
+    Quote:
+      allOf:
+      - $ref: '#/components/schemas/QuoteInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          total_amount:
+            type: number
+          currency:
+            type: string
+          line_items:
+            type: array
+            items:
+              type: object
+              additionalProperties: true
     QuoteInput:
       type: object
       required:
@@ -206,6 +153,13 @@ components:
           type: integer
         children:
           type: integer
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Error:
       type: object
       properties:
@@ -217,29 +171,6 @@ components:
           type: array
           items:
             type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
-    Quote:
-      allOf:
-      - $ref: '#/components/schemas/QuoteInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          total_amount:
-            type: number
-          currency:
-            type: string
-          line_items:
-            type: array
-            items:
-              type: object
-              additionalProperties: true
     QuotePage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -249,6 +180,75 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Quote'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    Quote:
+      description: A quote.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Quote'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    QuoteList:
+      description: A page of quotes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QuotePage'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

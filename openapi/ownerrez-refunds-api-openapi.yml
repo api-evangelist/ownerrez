@@ -53,53 +53,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Refund:
-      description: A refund.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Refund'
-    RefundList:
-      description: A page of refunds.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RefundPage'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
     Page:
       type: object
@@ -124,17 +77,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Refund'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
     Refund:
       type: object
       properties:
@@ -149,6 +91,64 @@ components:
         issued_utc:
           type: string
           format: date-time
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    Refund:
+      description: A refund.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Refund'
+    RefundList:
+      description: A page of refunds.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefundPage'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

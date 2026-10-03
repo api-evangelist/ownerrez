@@ -53,53 +53,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Deposit:
-      description: A deposit.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Deposit'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    DepositList:
-      description: A page of deposits.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DepositPage'
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
     Page:
       type: object
@@ -149,6 +102,53 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Deposit'
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    DepositList:
+      description: A page of deposits.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepositPage'
+    Deposit:
+      description: A deposit.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Deposit'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

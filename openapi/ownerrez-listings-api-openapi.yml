@@ -78,13 +78,73 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    ListingSite:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+    Listing:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        headline:
+          type: string
+    ListingPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Listing'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    ListingSitePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListingSite'
   responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     ListingSite:
       description: A listing site.
       content:
@@ -97,6 +157,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Listing'
+    ListingList:
+      description: A page of listings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingPage'
     ListingSiteList:
       description: A page of listing sites.
       content:
@@ -109,12 +175,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ListingList:
-      description: A page of listings.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ListingPage'
+            $ref: '#/components/schemas/Error'
   parameters:
     Limit:
       name: limit
@@ -123,13 +189,6 @@ components:
       schema:
         type: integer
         default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
     PropertyIds:
       name: property_ids
       in: query
@@ -147,72 +206,13 @@ components:
       schema:
         type: integer
         default: 0
-  schemas:
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    Listing:
-      type: object
-      properties:
-        id:
-          type: integer
-        property_id:
-          type: integer
-        title:
-          type: string
-        description:
-          type: string
-        headline:
-          type: string
-    ListingSite:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        code:
-          type: string
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    ListingPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Listing'
-    ListingSitePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/ListingSite'
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
   securitySchemes:
     basicAuth:
       type: http

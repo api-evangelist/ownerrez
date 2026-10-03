@@ -103,65 +103,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TagList:
-      description: A page of tag values.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TagPage'
-    Tag:
-      description: A tag value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Tag'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
     Page:
       type: object
@@ -177,16 +118,14 @@ components:
           type:
           - string
           - 'null'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
+    Tag:
+      allOf:
+      - $ref: '#/components/schemas/TagInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          name:
             type: string
     TagInput:
       type: object
@@ -200,22 +139,6 @@ components:
           type: integer
         entity_type:
           type: string
-    Tag:
-      allOf:
-      - $ref: '#/components/schemas/TagInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          name:
-            type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
     TagPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -225,6 +148,83 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Tag'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    TagList:
+      description: A page of tag values.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TagPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Tag:
+      description: A tag value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Tag'
   securitySchemes:
     basicAuth:
       type: http

@@ -123,38 +123,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Field:
-      allOf:
-      - $ref: '#/components/schemas/FieldInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
     FieldInput:
       type: object
       required:
@@ -169,6 +137,20 @@ components:
           type: string
         value:
           type: string
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
     FieldPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -178,6 +160,24 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Field'
+    Field:
+      allOf:
+      - $ref: '#/components/schemas/FieldInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
     DeleteResponse:
       type: object
       properties:
@@ -193,13 +193,6 @@ components:
       schema:
         type: integer
         default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
     Offset:
       name: offset
       in: query
@@ -207,9 +200,40 @@ components:
       schema:
         type: integer
         default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
   responses:
+    Field:
+      description: A custom field value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Field'
+    FieldList:
+      description: A page of custom field values.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldPage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
     NotFound:
       description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid credentials.
       content:
         application/json:
           schema:
@@ -220,30 +244,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    FieldList:
-      description: A page of custom field values.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FieldPage'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Field:
-      description: A custom field value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Field'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
   securitySchemes:
     basicAuth:
       type: http

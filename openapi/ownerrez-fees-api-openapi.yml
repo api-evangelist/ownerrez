@@ -50,31 +50,56 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    FeeList:
-      description: A page of fees.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FeePage'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
     Fee:
-      description: A fee.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Fee'
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        name:
+          type: string
+        amount:
+          type: number
+        is_percent:
+          type: boolean
+        taxable:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    FeePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Fee'
   parameters:
     Limit:
       name: limit
@@ -83,13 +108,6 @@ components:
       schema:
         type: integer
         default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
     PropertyIds:
       name: property_ids
       in: query
@@ -107,56 +125,38 @@ components:
       schema:
         type: integer
         default: 0
-  schemas:
-    FeePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Fee'
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    FeeList:
+      description: A page of fees.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeePage'
     Fee:
-      type: object
-      properties:
-        id:
-          type: integer
-        property_id:
-          type: integer
-        name:
-          type: string
-        amount:
-          type: number
-        is_percent:
-          type: boolean
-        taxable:
-          type: boolean
+      description: A fee.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Fee'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

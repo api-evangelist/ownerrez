@@ -53,53 +53,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    PaymentList:
-      description: A page of payments.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentPage'
-    Payment:
-      description: A payment.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Payment'
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
     Page:
       type: object
@@ -115,15 +68,6 @@ components:
           type:
           - string
           - 'null'
-    PaymentPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Payment'
     Payment:
       type: object
       properties:
@@ -140,6 +84,15 @@ components:
         received_utc:
           type: string
           format: date-time
+    PaymentPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Payment'
     Error:
       type: object
       properties:
@@ -151,6 +104,53 @@ components:
           type: array
           items:
             type: string
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+  responses:
+    Payment:
+      description: A payment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
+    PaymentList:
+      description: A page of payments.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentPage'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http
