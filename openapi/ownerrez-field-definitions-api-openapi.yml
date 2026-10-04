@@ -100,21 +100,44 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    FieldDefinition:
+      description: A field definition.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldDefinition'
+    FieldDefinitionList:
+      description: A page of field definitions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldDefinitionPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
     FieldDefinitionInput:
       type: object
       required:
@@ -131,6 +154,13 @@ components:
           type: array
           items:
             type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     FieldDefinitionPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -140,6 +170,27 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/FieldDefinition'
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    FieldDefinition:
+      allOf:
+      - $ref: '#/components/schemas/FieldDefinitionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
     Error:
       type: object
       properties:
@@ -151,58 +202,14 @@ components:
           type: array
           items:
             type: string
-    FieldDefinition:
-      allOf:
-      - $ref: '#/components/schemas/FieldDefinitionInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
-  responses:
-    FieldDefinition:
-      description: A field definition.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FieldDefinition'
-    FieldDefinitionList:
-      description: A page of field definitions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FieldDefinitionPage'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -217,13 +224,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
   securitySchemes:
     basicAuth:
       type: http

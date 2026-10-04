@@ -53,7 +53,52 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    DepositList:
+      description: A page of deposits.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepositPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deposit:
+      description: A deposit.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Deposit'
   schemas:
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    DepositPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Deposit'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -82,27 +127,14 @@ components:
         due_utc:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    DepositPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Deposit'
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -117,38 +149,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    DepositList:
-      description: A page of deposits.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DepositPage'
-    Deposit:
-      description: A deposit.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Deposit'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

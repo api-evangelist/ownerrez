@@ -50,6 +50,15 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    OwnerPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Owner'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -88,16 +97,39 @@ components:
           type: array
           items:
             type: string
-    OwnerPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Owner'
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Owner:
+      description: An owner.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Owner'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    OwnerList:
+      description: A page of owners.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OwnerPage'
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -112,38 +144,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    OwnerList:
-      description: A page of owners.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OwnerPage'
-    Owner:
-      description: An owner.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Owner'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

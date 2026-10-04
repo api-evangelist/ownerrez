@@ -123,6 +123,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    FieldPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Field'
     FieldInput:
       type: object
       required:
@@ -137,6 +146,13 @@ components:
           type: string
         value:
           type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -151,15 +167,6 @@ components:
           type:
           - string
           - 'null'
-    FieldPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Field'
     Field:
       allOf:
       - $ref: '#/components/schemas/FieldInput'
@@ -178,14 +185,51 @@ components:
           type: array
           items:
             type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
+  responses:
+    Field:
+      description: A custom field value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Field'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    FieldList:
+      description: A page of custom field values.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -200,50 +244,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    Field:
-      description: A custom field value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Field'
-    FieldList:
-      description: A page of custom field values.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FieldPage'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

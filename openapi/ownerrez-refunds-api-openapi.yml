@@ -54,6 +54,20 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Refund:
+      type: object
+      properties:
+        id:
+          type: integer
+        payment_id:
+          type: integer
+        booking_id:
+          type: integer
+        amount:
+          type: number
+        issued_utc:
+          type: string
+          format: date-time
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -77,20 +91,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Refund'
-    Refund:
-      type: object
-      properties:
-        id:
-          type: integer
-        payment_id:
-          type: integer
-        booking_id:
-          type: integer
-        amount:
-          type: number
-        issued_utc:
-          type: string
-          format: date-time
     Error:
       type: object
       properties:
@@ -102,7 +102,39 @@ components:
           type: array
           items:
             type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Refund:
+      description: A refund.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Refund'
+    RefundList:
+      description: A page of refunds.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefundPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -117,38 +149,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    Refund:
-      description: A refund.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Refund'
-    RefundList:
-      description: A page of refunds.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RefundPage'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

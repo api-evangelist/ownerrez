@@ -99,53 +99,44 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    WebhookSubscriptionPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookSubscription'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
+  responses:
     WebhookSubscription:
-      allOf:
-      - $ref: '#/components/schemas/WebhookSubscriptionInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          active:
-            type: boolean
-          created_utc:
-            type: string
-            format: date-time
+      description: A webhook subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscription'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    WebhookSubscriptionList:
+      description: A list of webhook subscriptions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscriptionPage'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
     WebhookSubscriptionInput:
       type: object
       required:
@@ -166,43 +157,52 @@ components:
           type: integer
         success:
           type: boolean
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    WebhookSubscriptionList:
-      description: A list of webhook subscriptions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscriptionPage'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+    WebhookSubscriptionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
     WebhookSubscription:
-      description: A webhook subscription.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscription'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
+      allOf:
+      - $ref: '#/components/schemas/WebhookSubscriptionInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          active:
+            type: boolean
+          created_utc:
+            type: string
+            format: date-time
   parameters:
     Id:
       name: id

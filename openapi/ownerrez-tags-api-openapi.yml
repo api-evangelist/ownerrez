@@ -103,7 +103,60 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    Tag:
+      description: A tag value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Tag'
+    TagList:
+      description: A page of tag values.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TagPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    TagPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Tag'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -118,15 +171,6 @@ components:
           type:
           - string
           - 'null'
-    Tag:
-      allOf:
-      - $ref: '#/components/schemas/TagInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          name:
-            type: string
     TagInput:
       type: object
       required:
@@ -139,22 +183,15 @@ components:
           type: integer
         entity_type:
           type: string
-    TagPage:
+    Tag:
       allOf:
-      - $ref: '#/components/schemas/Page'
+      - $ref: '#/components/schemas/TagInput'
       - type: object
         properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Tag'
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
+          id:
+            type: integer
+          name:
+            type: string
     Error:
       type: object
       properties:
@@ -167,6 +204,13 @@ components:
           items:
             type: string
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -181,50 +225,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    TagList:
-      description: A page of tag values.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TagPage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Tag:
-      description: A tag value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Tag'
   securitySchemes:
     basicAuth:
       type: http

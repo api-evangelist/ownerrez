@@ -103,7 +103,90 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Discount:
+      description: A discount.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Discount'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    DiscountList:
+      description: A page of discounts.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DiscountPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    Discount:
+      allOf:
+      - $ref: '#/components/schemas/DiscountInput'
+      - type: object
+        properties:
+          id:
+            type: integer
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -118,33 +201,6 @@ components:
           type:
           - string
           - 'null'
-    Discount:
-      allOf:
-      - $ref: '#/components/schemas/DiscountInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-    DiscountPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Discount'
     DiscountInput:
       type: object
       required:
@@ -161,82 +217,26 @@ components:
           type: boolean
         min_nights:
           type: integer
-    DeleteResponse:
+    DiscountPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Discount'
+    Error:
       type: object
       properties:
-        id:
+        statusCode:
           type: integer
-        success:
-          type: boolean
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    PropertyIds:
-      name: property_ids
-      in: query
-      description: One or more property identifiers to filter by.
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
-          type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    Discount:
-      description: A discount.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Discount'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    DiscountList:
-      description: A page of discounts.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DiscountPage'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   securitySchemes:
     basicAuth:
       type: http

@@ -51,18 +51,18 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    PropertyList:
-      description: A page of properties.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PropertyPage'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    PropertyList:
+      description: A page of properties.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PropertyPage'
   schemas:
     Page:
       type: object
@@ -78,6 +78,24 @@ components:
           type:
           - string
           - 'null'
+    Property:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        active:
+          type: boolean
+        address:
+          type: object
+          additionalProperties: true
+        bedrooms:
+          type: integer
+        bathrooms:
+          type: number
+        max_guests:
+          type: integer
     PropertyPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -98,24 +116,6 @@ components:
           type: array
           items:
             type: string
-    Property:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        active:
-          type: boolean
-        address:
-          type: object
-          additionalProperties: true
-        bedrooms:
-          type: integer
-        bathrooms:
-          type: number
-        max_guests:
-          type: integer
   parameters:
     Limit:
       name: limit

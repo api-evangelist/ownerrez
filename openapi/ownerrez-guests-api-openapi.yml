@@ -175,7 +175,61 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    Guest:
+      description: A guest.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Guest'
+    GuestList:
+      description: A page of guests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GuestPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    Guest:
+      allOf:
+      - $ref: '#/components/schemas/GuestInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+          created_utc:
+            type: string
+            format: date-time
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -214,13 +268,15 @@ components:
             additionalProperties: true
         notes:
           type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
+    GuestPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Guest'
     Error:
       type: object
       properties:
@@ -232,26 +288,14 @@ components:
           type: array
           items:
             type: string
-    GuestPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Guest'
-    Guest:
-      allOf:
-      - $ref: '#/components/schemas/GuestInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          created_utc:
-            type: string
-            format: date-time
   parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
     Limit:
       name: limit
       in: query
@@ -266,50 +310,6 @@ components:
       schema:
         type: integer
         default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Guest:
-      description: A guest.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Guest'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    GuestList:
-      description: A page of guests.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/GuestPage'
   securitySchemes:
     basicAuth:
       type: http

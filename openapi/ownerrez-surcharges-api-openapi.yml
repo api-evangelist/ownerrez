@@ -103,7 +103,58 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    SurchargeList:
+      description: A page of surcharges.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SurchargePage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Surcharge:
+      description: A surcharge.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Surcharge'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Surcharge:
+      allOf:
+      - $ref: '#/components/schemas/SurchargeInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -118,13 +169,15 @@ components:
           type:
           - string
           - 'null'
-    Surcharge:
+    SurchargePage:
       allOf:
-      - $ref: '#/components/schemas/SurchargeInput'
+      - $ref: '#/components/schemas/Page'
       - type: object
         properties:
-          id:
-            type: integer
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Surcharge'
     SurchargeInput:
       type: object
       required:
@@ -139,15 +192,6 @@ components:
           type: number
         is_percent:
           type: boolean
-    SurchargePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Surcharge'
     Error:
       type: object
       properties:
@@ -159,21 +203,7 @@ components:
           type: array
           items:
             type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
   parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
     PropertyIds:
       name: property_ids
       in: query
@@ -184,13 +214,6 @@ components:
         type: array
         items:
           type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
     Id:
       name: id
       in: path
@@ -198,43 +221,20 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: integer
-  responses:
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    Surcharge:
-      description: A surcharge.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Surcharge'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    SurchargeList:
-      description: A page of surcharges.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SurchargePage'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   securitySchemes:
     basicAuth:
       type: http

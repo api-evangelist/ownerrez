@@ -55,6 +55,63 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InquiryList:
+      description: A page of inquiries.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InquiryPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Inquiry:
+      description: An inquiry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Inquiry'
+  parameters:
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   schemas:
     Page:
       type: object
@@ -70,6 +127,17 @@ components:
           type:
           - string
           - 'null'
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
     Inquiry:
       type: object
       properties:
@@ -99,74 +167,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Inquiry'
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    PropertyIds:
-      name: property_ids
-      in: query
-      description: One or more property identifiers to filter by.
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
-          type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-  responses:
-    InquiryList:
-      description: A page of inquiries.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InquiryPage'
-    Inquiry:
-      description: An inquiry.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Inquiry'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

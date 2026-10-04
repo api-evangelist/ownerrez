@@ -77,6 +77,37 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Message:
+      description: A message.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    MessageList:
+      description: A page of messages.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessagePage'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Page:
       type: object
@@ -92,6 +123,27 @@ components:
           type:
           - string
           - 'null'
+    MessageInput:
+      type: object
+      required:
+      - booking_id
+      - body
+      properties:
+        booking_id:
+          type: integer
+        body:
+          type: string
+        is_automated:
+          type: boolean
+    MessagePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Message'
     Message:
       allOf:
       - $ref: '#/components/schemas/MessageInput'
@@ -107,27 +159,6 @@ components:
           sent_utc:
             type: string
             format: date-time
-    MessagePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Message'
-    MessageInput:
-      type: object
-      required:
-      - booking_id
-      - body
-      properties:
-        booking_id:
-          type: integer
-        body:
-          type: string
-        is_automated:
-          type: boolean
     Error:
       type: object
       properties:
@@ -140,20 +171,6 @@ components:
           items:
             type: string
   parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
     Id:
       name: id
       in: path
@@ -161,37 +178,20 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: integer
-  responses:
-    MessageList:
-      description: A page of messages.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/MessagePage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Message:
-      description: A message.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Message'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
   securitySchemes:
     basicAuth:
       type: http

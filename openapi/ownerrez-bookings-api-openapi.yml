@@ -113,6 +113,38 @@ paths:
           $ref: '#/components/responses/ValidationError'
 components:
   schemas:
+    BookingInput:
+      type: object
+      required:
+      - property_id
+      - arrival
+      - departure
+      properties:
+        property_id:
+          type: integer
+        guest_id:
+          type: integer
+        arrival:
+          type: string
+          format: date
+        departure:
+          type: string
+          format: date
+        adults:
+          type: integer
+        children:
+          type: integer
+        notes:
+          type: string
+    BookingPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Booking'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -148,29 +180,6 @@ components:
           updated_utc:
             type: string
             format: date-time
-    BookingInput:
-      type: object
-      required:
-      - property_id
-      - arrival
-      - departure
-      properties:
-        property_id:
-          type: integer
-        guest_id:
-          type: integer
-        arrival:
-          type: string
-          format: date
-        departure:
-          type: string
-          format: date
-        adults:
-          type: integer
-        children:
-          type: integer
-        notes:
-          type: string
     Error:
       type: object
       properties:
@@ -182,42 +191,33 @@ components:
           type: array
           items:
             type: string
-    BookingPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Booking'
   responses:
-    Booking:
-      description: A booking.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Booking'
-    BookingList:
-      description: A page of bookings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BookingPage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BookingList:
+      description: A page of bookings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingPage'
+    Booking:
+      description: A booking.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Booking'
     RateLimited:
       description: Rate limit exceeded. The API allows 300 requests per 5 minutes per IP; exceeding it returns HTTP 429 with a JSON error body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -229,13 +229,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
     PropertyIds:
       name: property_ids
       in: query
@@ -246,13 +239,6 @@ components:
         type: array
         items:
           type: integer
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
     Id:
       name: id
       in: path
@@ -260,6 +246,20 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
   securitySchemes:
     basicAuth:
       type: http
