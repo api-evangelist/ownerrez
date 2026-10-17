@@ -49,16 +49,32 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    OwnerList:
+      description: A page of owners.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OwnerPage'
+    Owner:
+      description: An owner.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Owner'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    OwnerPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Owner'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -73,6 +89,15 @@ components:
           type:
           - string
           - 'null'
+    OwnerPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Owner'
     Owner:
       type: object
       properties:
@@ -97,31 +122,6 @@ components:
           type: array
           items:
             type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Owner:
-      description: An owner.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Owner'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    OwnerList:
-      description: A page of owners.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OwnerPage'
   parameters:
     Id:
       name: id

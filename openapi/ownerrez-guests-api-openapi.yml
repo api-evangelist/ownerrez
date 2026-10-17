@@ -182,44 +182,59 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
     Guest:
       description: A guest.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Guest'
-    GuestList:
-      description: A page of guests.
+    Deleted:
+      description: Deletion confirmation.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GuestPage'
+            $ref: '#/components/schemas/DeleteResponse'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    GuestList:
+      description: A page of guests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GuestPage'
     ValidationError:
       description: The request payload failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
   schemas:
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
     Guest:
       allOf:
       - $ref: '#/components/schemas/GuestInput'
@@ -230,20 +245,6 @@ components:
           created_utc:
             type: string
             format: date-time
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
     GuestInput:
       type: object
       properties:
@@ -277,6 +278,13 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Guest'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Error:
       type: object
       properties:
@@ -288,28 +296,20 @@ components:
           type: array
           items:
             type: string
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
   securitySchemes:
     basicAuth:
       type: http

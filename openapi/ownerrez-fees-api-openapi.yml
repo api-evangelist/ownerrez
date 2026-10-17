@@ -50,32 +50,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Fee:
-      description: A fee.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Fee'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    FeeList:
-      description: A page of fees.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FeePage'
   parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
     PropertyIds:
       name: property_ids
       in: query
@@ -93,13 +75,6 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: integer
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
     Offset:
       name: offset
       in: query
@@ -107,7 +82,46 @@ components:
       schema:
         type: integer
         default: 0
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    FeeList:
+      description: A page of fees.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FeePage'
+    Fee:
+      description: A fee.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Fee'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
     Fee:
       type: object
       properties:
@@ -123,6 +137,15 @@ components:
           type: boolean
         taxable:
           type: boolean
+    FeePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Fee'
     Error:
       type: object
       properties:
@@ -134,29 +157,6 @@ components:
           type: array
           items:
             type: string
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    FeePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Fee'
   securitySchemes:
     basicAuth:
       type: http

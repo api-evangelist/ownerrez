@@ -112,7 +112,90 @@ paths:
         '422':
           $ref: '#/components/responses/ValidationError'
 components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items to return per page.
+      schema:
+        type: integer
+        default: 100
+    PropertyIds:
+      name: property_ids
+      in: query
+      description: One or more property identifiers to filter by.
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: integer
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Booking:
+      description: A booking.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Booking'
+    RateLimited:
+      description: Rate limit exceeded. The API allows 300 requests per 5 minutes per IP; exceeding it returns HTTP 429 with a JSON error body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BookingList:
+      description: A page of bookings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
     BookingInput:
       type: object
       required:
@@ -136,29 +219,6 @@ components:
           type: integer
         notes:
           type: string
-    BookingPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Booking'
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
     Booking:
       allOf:
       - $ref: '#/components/schemas/BookingInput'
@@ -191,75 +251,15 @@ components:
           type: array
           items:
             type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BookingList:
-      description: A page of bookings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BookingPage'
-    Booking:
-      description: A booking.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Booking'
-    RateLimited:
-      description: Rate limit exceeded. The API allows 300 requests per 5 minutes per IP; exceeding it returns HTTP 429 with a JSON error body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    PropertyIds:
-      name: property_ids
-      in: query
-      description: One or more property identifiers to filter by.
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
-          type: integer
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: integer
-    Limit:
-      name: limit
-      in: query
-      description: Maximum number of items to return per page.
-      schema:
-        type: integer
-        default: 100
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
+    BookingPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Booking'
   securitySchemes:
     basicAuth:
       type: http

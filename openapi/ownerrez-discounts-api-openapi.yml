@@ -104,36 +104,36 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Discount:
-      description: A discount.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Discount'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Discount:
+      description: A discount.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Discount'
     Deleted:
       description: Deletion confirmation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/DeleteResponse'
-    DiscountList:
-      description: A page of discounts.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DiscountPage'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    DiscountList:
+      description: A page of discounts.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DiscountPage'
     ValidationError:
       description: The request payload failed validation.
       content:
@@ -151,6 +151,13 @@ components:
         type: array
         items:
           type: integer
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
     Id:
       name: id
       in: path
@@ -165,21 +172,7 @@ components:
       schema:
         type: integer
         default: 100
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   schemas:
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
     Discount:
       allOf:
       - $ref: '#/components/schemas/DiscountInput'
@@ -217,15 +210,13 @@ components:
           type: boolean
         min_nights:
           type: integer
-    DiscountPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Discount'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Error:
       type: object
       properties:
@@ -237,6 +228,15 @@ components:
           type: array
           items:
             type: string
+    DiscountPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Discount'
   securitySchemes:
     basicAuth:
       type: http

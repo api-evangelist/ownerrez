@@ -53,6 +53,31 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Refund:
+      description: A refund.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Refund'
+    RefundList:
+      description: A page of refunds.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefundPage'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Refund:
       type: object
@@ -82,15 +107,6 @@ components:
           type:
           - string
           - 'null'
-    RefundPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Refund'
     Error:
       type: object
       properties:
@@ -102,31 +118,15 @@ components:
           type: array
           items:
             type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Refund:
-      description: A refund.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Refund'
-    RefundList:
-      description: A page of refunds.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RefundPage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    RefundPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Refund'
   parameters:
     Id:
       name: id

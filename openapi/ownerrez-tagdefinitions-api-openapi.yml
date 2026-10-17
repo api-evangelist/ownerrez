@@ -107,18 +107,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
+    TagDefinition:
+      description: A tag definition.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DeleteResponse'
+            $ref: '#/components/schemas/TagDefinition'
     TagDefinitionList:
       description: A page of tag definitions.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/TagDefinitionPage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -131,12 +137,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    TagDefinition:
-      description: A tag definition.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TagDefinition'
   schemas:
     TagDefinition:
       allOf:
@@ -145,13 +145,6 @@ components:
         properties:
           id:
             type: integer
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -166,17 +159,6 @@ components:
           type:
           - string
           - 'null'
-    TagDefinitionInput:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        entity_type:
-          type: string
-        color:
-          type: string
     TagDefinitionPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -186,6 +168,13 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/TagDefinition'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Error:
       type: object
       properties:
@@ -197,7 +186,25 @@ components:
           type: array
           items:
             type: string
+    TagDefinitionInput:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        entity_type:
+          type: string
+        color:
+          type: string
   parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
     Id:
       name: id
       in: path
@@ -212,13 +219,6 @@ components:
       schema:
         type: integer
         default: 100
-    Offset:
-      name: offset
-      in: query
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
   securitySchemes:
     basicAuth:
       type: http

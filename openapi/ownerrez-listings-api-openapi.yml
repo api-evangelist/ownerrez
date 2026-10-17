@@ -79,24 +79,12 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    ListingSite:
-      description: A listing site.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListingSite'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ListingList:
-      description: A page of listings.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ListingPage'
     ListingSiteList:
       description: A page of listing sites.
       content:
@@ -109,6 +97,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Listing'
+    ListingList:
+      description: A page of listings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingPage'
+    ListingSite:
+      description: A listing site.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListingSite'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -148,18 +148,14 @@ components:
         type: integer
         default: 0
   schemas:
-    Listing:
+    ListingSite:
       type: object
       properties:
         id:
           type: integer
-        property_id:
-          type: integer
-        title:
+        name:
           type: string
-        description:
-          type: string
-        headline:
+        code:
           type: string
     Page:
       type: object
@@ -175,24 +171,19 @@ components:
           type:
           - string
           - 'null'
-    ListingSite:
+    Listing:
       type: object
       properties:
         id:
           type: integer
-        name:
+        property_id:
+          type: integer
+        title:
           type: string
-        code:
+        description:
           type: string
-    ListingSitePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/ListingSite'
+        headline:
+          type: string
     ListingPage:
       allOf:
       - $ref: '#/components/schemas/Page'
@@ -213,6 +204,15 @@ components:
           type: array
           items:
             type: string
+    ListingSitePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/ListingSite'
   securitySchemes:
     basicAuth:
       type: http

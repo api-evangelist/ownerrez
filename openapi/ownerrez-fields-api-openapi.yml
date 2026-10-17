@@ -122,37 +122,44 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Field:
+      description: A custom field value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Field'
+    FieldList:
+      description: A page of custom field values.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FieldPage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    FieldPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Field'
-    FieldInput:
-      type: object
-      required:
-      - field_definition_id
-      - entity_id
-      properties:
-        field_definition_id:
-          type: integer
-        entity_id:
-          type: integer
-        entity_type:
-          type: string
-        value:
-          type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -174,6 +181,27 @@ components:
         properties:
           id:
             type: integer
+    FieldInput:
+      type: object
+      required:
+      - field_definition_id
+      - entity_id
+      properties:
+        field_definition_id:
+          type: integer
+        entity_id:
+          type: integer
+        entity_type:
+          type: string
+        value:
+          type: string
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Error:
       type: object
       properties:
@@ -185,43 +213,15 @@ components:
           type: array
           items:
             type: string
-  responses:
-    Field:
-      description: A custom field value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Field'
-    Unauthorized:
-      description: Missing or invalid credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    FieldList:
-      description: A page of custom field values.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/FieldPage'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    FieldPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Field'
   parameters:
     Id:
       name: id

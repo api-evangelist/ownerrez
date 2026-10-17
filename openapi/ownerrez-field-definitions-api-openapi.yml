@@ -107,12 +107,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
     FieldDefinition:
       description: A field definition.
       content:
@@ -125,6 +119,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/FieldDefinitionPage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -138,6 +138,47 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    FieldDefinitionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/FieldDefinition'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
     FieldDefinitionInput:
       type: object
       required:
@@ -154,36 +195,6 @@ components:
           type: array
           items:
             type: string
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
-    FieldDefinitionPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/FieldDefinition'
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
     FieldDefinition:
       allOf:
       - $ref: '#/components/schemas/FieldDefinitionInput'
@@ -191,17 +202,6 @@ components:
         properties:
           id:
             type: integer
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
   parameters:
     Id:
       name: id

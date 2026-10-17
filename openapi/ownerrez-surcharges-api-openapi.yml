@@ -104,18 +104,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    SurchargeList:
-      description: A page of surcharges.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SurchargePage'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
@@ -128,6 +116,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Surcharge'
+    SurchargeList:
+      description: A page of surcharges.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SurchargePage'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -140,69 +140,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  schemas:
-    Surcharge:
-      allOf:
-      - $ref: '#/components/schemas/SurchargeInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
-    Page:
-      type: object
-      description: Common pagination envelope returned by list endpoints.
-      properties:
-        count:
-          type: integer
-        limit:
-          type: integer
-        offset:
-          type: integer
-        nextPageUrl:
-          type:
-          - string
-          - 'null'
-    SurchargePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Surcharge'
-    SurchargeInput:
-      type: object
-      required:
-      - property_id
-      - name
-      properties:
-        property_id:
-          type: integer
-        name:
-          type: string
-        amount:
-          type: number
-        is_percent:
-          type: boolean
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        messages:
-          type: array
-          items:
-            type: string
   parameters:
     PropertyIds:
       name: property_ids
@@ -235,6 +172,69 @@ components:
       schema:
         type: integer
         default: 0
+  schemas:
+    Page:
+      type: object
+      description: Common pagination envelope returned by list endpoints.
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        nextPageUrl:
+          type:
+          - string
+          - 'null'
+    SurchargeInput:
+      type: object
+      required:
+      - property_id
+      - name
+      properties:
+        property_id:
+          type: integer
+        name:
+          type: string
+        amount:
+          type: number
+        is_percent:
+          type: boolean
+    SurchargePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Surcharge'
+    Surcharge:
+      allOf:
+      - $ref: '#/components/schemas/SurchargeInput'
+      - type: object
+        properties:
+          id:
+            type: integer
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
   securitySchemes:
     basicAuth:
       type: http

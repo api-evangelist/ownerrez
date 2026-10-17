@@ -110,24 +110,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Deleted:
-      description: Deletion confirmation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteResponse'
-    Quote:
-      description: A quote.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Quote'
     QuoteList:
       description: A page of quotes.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/QuotePage'
+    Quote:
+      description: A quote.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Quote'
+    Deleted:
+      description: Deletion confirmation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteResponse'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -173,13 +173,6 @@ components:
         type: integer
         default: 0
   schemas:
-    DeleteResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-        success:
-          type: boolean
     Quote:
       allOf:
       - $ref: '#/components/schemas/QuoteInput'
@@ -196,15 +189,6 @@ components:
             items:
               type: object
               additionalProperties: true
-    QuotePage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Quote'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -238,6 +222,13 @@ components:
           type: integer
         children:
           type: integer
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        success:
+          type: boolean
     Error:
       type: object
       properties:
@@ -249,6 +240,15 @@ components:
           type: array
           items:
             type: string
+    QuotePage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Quote'
   securitySchemes:
     basicAuth:
       type: http

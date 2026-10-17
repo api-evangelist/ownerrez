@@ -51,12 +51,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Review:
-      description: A review.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Review'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
@@ -69,6 +63,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ReviewPage'
+    Review:
+      description: A review.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Review'
     NotFound:
       description: The requested resource was not found.
       content:

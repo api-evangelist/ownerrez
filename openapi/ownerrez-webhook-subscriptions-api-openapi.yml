@@ -100,18 +100,24 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    WebhookSubscription:
-      description: A webhook subscription.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscription'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    WebhookSubscriptionList:
+      description: A list of webhook subscriptions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscriptionPage'
+    WebhookSubscription:
+      description: A webhook subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookSubscription'
     Deleted:
       description: Deletion confirmation.
       content:
@@ -124,12 +130,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    WebhookSubscriptionList:
-      description: A list of webhook subscriptions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/WebhookSubscriptionPage'
     ValidationError:
       description: The request payload failed validation.
       content:
@@ -150,6 +150,15 @@ components:
           type: array
           items:
             type: string
+    WebhookSubscriptionPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
     DeleteResponse:
       type: object
       properties:
@@ -168,15 +177,18 @@ components:
           type: array
           items:
             type: string
-    WebhookSubscriptionPage:
+    WebhookSubscription:
       allOf:
-      - $ref: '#/components/schemas/Page'
+      - $ref: '#/components/schemas/WebhookSubscriptionInput'
       - type: object
         properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookSubscription'
+          id:
+            type: integer
+          active:
+            type: boolean
+          created_utc:
+            type: string
+            format: date-time
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -191,18 +203,6 @@ components:
           type:
           - string
           - 'null'
-    WebhookSubscription:
-      allOf:
-      - $ref: '#/components/schemas/WebhookSubscriptionInput'
-      - type: object
-        properties:
-          id:
-            type: integer
-          active:
-            type: boolean
-          created_utc:
-            type: string
-            format: date-time
   parameters:
     Id:
       name: id

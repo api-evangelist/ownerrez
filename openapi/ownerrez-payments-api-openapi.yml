@@ -54,18 +54,18 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Payment:
-      description: A payment.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Payment'
     Unauthorized:
       description: Missing or invalid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Payment:
+      description: A payment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
     PaymentList:
       description: A page of payments.
       content:
@@ -95,6 +95,15 @@ components:
         received_utc:
           type: string
           format: date-time
+    PaymentPage:
+      allOf:
+      - $ref: '#/components/schemas/Page'
+      - type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Payment'
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -120,15 +129,6 @@ components:
           type: array
           items:
             type: string
-    PaymentPage:
-      allOf:
-      - $ref: '#/components/schemas/Page'
-      - type: object
-        properties:
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/Payment'
   parameters:
     Id:
       name: id

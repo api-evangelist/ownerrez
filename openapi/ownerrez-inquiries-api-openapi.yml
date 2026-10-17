@@ -62,6 +62,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Inquiry:
+      description: An inquiry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Inquiry'
     InquiryList:
       description: A page of inquiries.
       content:
@@ -74,12 +80,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Inquiry:
-      description: An inquiry.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Inquiry'
   parameters:
     PropertyIds:
       name: property_ids
@@ -113,6 +113,26 @@ components:
         type: integer
         default: 0
   schemas:
+    Inquiry:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_id:
+          type: integer
+        guest_id:
+          type: integer
+        arrival:
+          type: string
+          format: date
+        departure:
+          type: string
+          format: date
+        status:
+          type: string
+        received_utc:
+          type: string
+          format: date-time
     Page:
       type: object
       description: Common pagination envelope returned by list endpoints.
@@ -138,26 +158,6 @@ components:
           type: array
           items:
             type: string
-    Inquiry:
-      type: object
-      properties:
-        id:
-          type: integer
-        property_id:
-          type: integer
-        guest_id:
-          type: integer
-        arrival:
-          type: string
-          format: date
-        departure:
-          type: string
-          format: date
-        status:
-          type: string
-        received_utc:
-          type: string
-          format: date-time
     InquiryPage:
       allOf:
       - $ref: '#/components/schemas/Page'
