@@ -1,4 +1,4 @@
-# OwnerRez (ownerrez)
+# OwnerRez
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,131 +64,167 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OwnerRez is vacation-rental and short-term-rental property management software for hosts, owners, and property managers, covering channel management, bookings, guest CRM, quoting, payments, messaging, reviews, and a hosted booking website. The **OwnerRez API v2** is a REST/JSON API served under `https://api.ownerrez.com/v2` that exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messaging, payments and financials, custom fields and tags, owners, and outbound webhook subscriptions. Requests are authenticated with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token supplied as the username in HTTP Basic auth, and server-to-app events are delivered through outbound webhooks. There is no public WebSocket API.
+OwnerRez is vacation-rental and short-term-rental property management software for hosts, owners, and property managers, covering channel management, bookings, guest CRM, quoting, payments, messaging, reviews, and a hosted booking website. The OwnerRez API v2 is a REST/JSON API served under https://api.ownerrez.com/v2 that exposes bookings, properties, listings, guests, inquiries, quotes, reviews, guest messaging, payments and financials, custom fields and tags, owners, and outbound webhook subscriptions. Requests are authenticated with an OAuth 2.0 access token (Authorization Code Grant) or with an API key / Personal Access Token via HTTP Basic auth, and server-to-app events are delivered through outbound webhooks.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ownerrez/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ownerrez/refs/heads/main/apis.yml)
+**Areas:** Vacation Rentals · Short-Term Rental · Property Management · Hospitality · Booking · Channel Manager
 
-## Tags
+## OwnerRez on APIs.io
 
-- Vacation Rental
-- Short-Term Rental
-- Property Management
-- Hospitality
-- Bookings
-- Channel Manager
+Everything profiled for OwnerRez is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ownerrez/](https://apis.io/providers/ownerrez/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (23)
 
-- **Created:** 2026-07-03
-- **Modified:** 2026-07-03
+- [OwnerRez Bookings API](https://apis.io/apis/ownerrez/ownerrez-bookings-api/) — Reservations against a property, including dates, guest, and charges.
+- [OwnerRez Deposits API](https://apis.io/apis/ownerrez/ownerrez-deposits-api/) — Security and damage deposits.
+- [OwnerRez Discounts API](https://apis.io/apis/ownerrez/ownerrez-discounts-api/) — Discount rules.
+- [OwnerRez Fees API](https://apis.io/apis/ownerrez/ownerrez-fees-api/) — Fees applied to bookings and quotes.
+- [OwnerRez Fields API](https://apis.io/apis/ownerrez/ownerrez-fields-api/) — Custom field values attached to records.
+- [OwnerRez Guests API](https://apis.io/apis/ownerrez/ownerrez-guests-api/) — Guest contact records and their addresses, emails, and phones.
+- [OwnerRez Inquiries API](https://apis.io/apis/ownerrez/ownerrez-inquiries-api/) — Inbound guest inquiries and leads.
+- [OwnerRez Listings API](https://apis.io/apis/ownerrez/ownerrez-listings-api/) — Public listing content and channel listing sites for properties.
+- [OwnerRez Messages API](https://apis.io/apis/ownerrez/ownerrez-messages-api/) — Guest messaging threads and outbound messages.
+- [OwnerRez Owners API](https://apis.io/apis/ownerrez/ownerrez-owners-api/) — Property owners.
+- [OwnerRez Payments API](https://apis.io/apis/ownerrez/ownerrez-payments-api/) — Payments recorded against bookings.
+- [OwnerRez Properties API](https://apis.io/apis/ownerrez/ownerrez-properties-api/) — Rental properties managed in OwnerRez.
+- [OwnerRez Quotes API](https://apis.io/apis/ownerrez/ownerrez-quotes-api/) — Price quotes generated for a stay.
+- [OwnerRez Refunds API](https://apis.io/apis/ownerrez/ownerrez-refunds-api/) — Refunds issued against payments.
+- [OwnerRez Reviews API](https://apis.io/apis/ownerrez/ownerrez-reviews-api/) — Guest reviews collected for stays and properties.
+- [OwnerRez SpotRates API](https://apis.io/apis/ownerrez/ownerrez-spotrates-api/) — Ad hoc nightly spot-rate overrides.
+- [OwnerRez Surcharges API](https://apis.io/apis/ownerrez/ownerrez-surcharges-api/) — Surcharge rules applied to bookings and quotes.
+- [OwnerRez TagDefinitions API](https://apis.io/apis/ownerrez/ownerrez-tagdefinitions-api/) — Definitions of tags.
+- [OwnerRez Tags API](https://apis.io/apis/ownerrez/ownerrez-tags-api/) — Tag values applied to records.
+- [OwnerRez Users API](https://apis.io/apis/ownerrez/ownerrez-users-api/) — The authenticated user context.
+- [OwnerRez Field Definitions API](https://apis.io/apis/ownerrez/ownerrez-field-definitions-api/) — Definitions of custom fields.
+- [OwnerRez Property Search API](https://apis.io/apis/ownerrez/ownerrez-property-search-api/) — Availability and criteria search across properties.
+- [OwnerRez Webhook Subscriptions API](https://apis.io/apis/ownerrez/ownerrez-webhook-subscriptions-api/) — Outbound webhook subscriptions and their event categories.
 
-## Authentication
+### Published properties
 
-- **OAuth 2.0** — Authorization Code Grant (RFC 6749 §4.1). Authorize at `https://app.ownerrez.com/oauth/authorize`, then exchange the code at `https://api.ownerrez.com/oauth/access_token` (alias `/oauth/token`). Temporary codes expire after 10 minutes.
-- **HTTP Basic** — supply your OwnerRez API key / Personal Access Token as the username (blank password).
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Rate Limits
+#### Agentic access (1)
 
-The API is limited to **300 requests per 5 minutes per IP**. Exceeding the limit returns HTTP `429` with a JSON error body; the IP is automatically unblocked once its request rate falls back below the limit.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## APIs
+- [Ownerrez Agentic Access](https://apis.io/agentic-access/ownerrez/ownerrez-agentic-access/)
 
-### OwnerRez Bookings API
+#### Collections (23)
 
-List, retrieve, create, and update bookings — reservations against a property with arrival/departure dates, guest, occupancy, status, and charge totals.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
+- [OwnerRez API v2](https://apis.io/collections/ownerrez/open-ownerrez/)
+- [OwnerRez API v2 Bookings API](https://apis.io/collections/ownerrez/open-ownerrez-bookings-api/)
+- [OwnerRez API v2 Bookings Deposits API](https://apis.io/collections/ownerrez/open-ownerrez-deposits-api/)
+- [OwnerRez API v2 Bookings Discounts API](https://apis.io/collections/ownerrez/open-ownerrez-discounts-api/)
+- [OwnerRez API v2 Bookings Fees API](https://apis.io/collections/ownerrez/open-ownerrez-fees-api/)
+- [OwnerRez API v2 Bookings FieldDefinitions API](https://apis.io/collections/ownerrez/open-ownerrez-fielddefinitions-api/)
+- [OwnerRez API v2 Bookings Fields API](https://apis.io/collections/ownerrez/open-ownerrez-fields-api/)
+- [OwnerRez API v2 Bookings Guests API](https://apis.io/collections/ownerrez/open-ownerrez-guests-api/)
+- [OwnerRez API v2 Bookings Inquiries API](https://apis.io/collections/ownerrez/open-ownerrez-inquiries-api/)
+- [OwnerRez API v2 Bookings Listings API](https://apis.io/collections/ownerrez/open-ownerrez-listings-api/)
+- [OwnerRez API v2 Bookings Messages API](https://apis.io/collections/ownerrez/open-ownerrez-messages-api/)
+- [OwnerRez API v2 Bookings Owners API](https://apis.io/collections/ownerrez/open-ownerrez-owners-api/)
+- [OwnerRez API v2 Bookings Payments API](https://apis.io/collections/ownerrez/open-ownerrez-payments-api/)
+- [OwnerRez API v2 Bookings Properties API](https://apis.io/collections/ownerrez/open-ownerrez-properties-api/)
+- [OwnerRez API v2 Bookings PropertySearch API](https://apis.io/collections/ownerrez/open-ownerrez-propertysearch-api/)
+- [OwnerRez API v2 Bookings Quotes API](https://apis.io/collections/ownerrez/open-ownerrez-quotes-api/)
+- [OwnerRez API v2 Bookings Refunds API](https://apis.io/collections/ownerrez/open-ownerrez-refunds-api/)
+- [OwnerRez API v2 Bookings SpotRates API](https://apis.io/collections/ownerrez/open-ownerrez-spotrates-api/)
+- [OwnerRez API v2 Bookings Surcharges API](https://apis.io/collections/ownerrez/open-ownerrez-surcharges-api/)
+- [OwnerRez API v2 Bookings TagDefinitions API](https://apis.io/collections/ownerrez/open-ownerrez-tagdefinitions-api/)
+- [OwnerRez API v2 Bookings Tags API](https://apis.io/collections/ownerrez/open-ownerrez-tags-api/)
+- [OwnerRez API v2 Bookings Users API](https://apis.io/collections/ownerrez/open-ownerrez-users-api/)
+- [OwnerRez API v2 Bookings WebhookSubscriptions API](https://apis.io/collections/ownerrez/open-ownerrez-webhooksubscriptions-api/)
 
-#### Properties
+#### Security (2)
 
-- [Documentation](https://www.ownerrez.com/support/articles/api-overview)
-- [API Reference](https://api.ownerrez.com/help/v2)
-- [OpenAPI](openapi/ownerrez-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ownerrez.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ownerrez.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Authentication, trust centre, and vulnerability disclosure.
 
-### OwnerRez Properties API
+- [Ownerrez Authentication](https://apis.io/security/ownerrez/ownerrez-authentication/)
+- [Ownerrez Domain Security](https://apis.io/security/ownerrez/ownerrez-domain-security/)
 
-Read the rental properties managed in OwnerRez and search them by availability window and occupancy via the PropertySearch endpoint.
+#### OAuth scopes (1)
 
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
+The permissions the API asks for.
 
-### OwnerRez Listings API
+- [Ownerrez Scopes](https://apis.io/scopes/ownerrez/ownerrez-scopes/)
 
-Read public listing content (titles, headlines, descriptions) for properties and the channel listing sites — such as Airbnb and Vrbo — that properties are published to.
+#### Plans and pricing (1)
 
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
+Published plans, tiers and prices.
 
-### OwnerRez Guests API
+- [Ownerrez Plans Pricing](https://apis.io/plans/ownerrez/ownerrez-plans-pricing/)
 
-Manage guest contact records — list, retrieve, create, update, and delete guests, and remove individual addresses, email addresses, and phone numbers from a guest.
+#### Rate limits (1)
 
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
+Published request limits.
 
-### OwnerRez Inquiries API
+- [Ownerrez Rate Limits](https://apis.io/rate-limits/ownerrez/ownerrez-rate-limits/)
 
-Read inbound guest inquiries and leads, filtered by property and received time, to feed a lead-management or booking workflow.
+#### FinOps (1)
 
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
+What the API costs to run, by operation.
 
-### OwnerRez Quotes API
+- [Ownerrez Finops](https://apis.io/finops/ownerrez/ownerrez-finops/)
 
-Create, read, update, and delete price quotes for a property and date range, and manage the pricing building blocks that drive them — discounts, fees, surcharges, and ad hoc nightly spot rates.
+## Where to find this API
 
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### OwnerRez Reviews API
-
-Read guest reviews collected for stays and properties, including rating, title, body, and reviewer, for reputation and display use cases.
-
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
-
-### OwnerRez Messages API
-
-Read guest message threads and send outbound messages tied to a booking, for automated and manual guest communication.
-
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
-
-### OwnerRez Custom Fields and Tags API
-
-Define and apply custom metadata across records — field definitions and their values (Fields/FieldDefinitions) plus tag definitions and their applied tags (Tags/TagDefinitions), including delete-by-definition and delete-by-name helpers.
-
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
-
-### OwnerRez Payments and Financials API
-
-Read the financial records attached to bookings — payments, security and damage deposits, and refunds — plus the owners those properties belong to and the authenticated user context.
-
-- **Human URL:** [https://api.ownerrez.com/help/v2](https://api.ownerrez.com/help/v2)
-- **Base URL:** `https://api.ownerrez.com/v2`
-
-### OwnerRez Webhook Subscriptions API
-
-Create, list, retrieve, and delete outbound webhook subscriptions and enumerate the available event categories. OwnerRez POSTs event notifications to your subscribed URL; there is no public WebSocket API.
-
-- **Human URL:** [https://www.ownerrez.com/support/articles/api-webhooks](https://www.ownerrez.com/support/articles/api-webhooks)
-- **Base URL:** `https://api.ownerrez.com/v2`
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/ownerrez)
-- [LinkedIn](https://www.linkedin.com/company/ownerrez)
 - [Website](https://www.ownerrez.com)
 - [Documentation](https://api.ownerrez.com/help/v2)
-- [Plans](plans/ownerrez-plans-pricing.yml)
-- [Rate Limits](rate-limits/ownerrez-rate-limits.yml)
-- [Fin Ops](finops/ownerrez-finops.yml)
+- [Blog](https://www.ownerrez.com/blog)
+- [GitHub](https://github.com/ownerrez)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 28.7** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 52.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 7.9 |
+
+**Agent readiness 24.7** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 21.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ownerrez/](https://apis.io/providers/ownerrez/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OwnerRez: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ownerrez/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
